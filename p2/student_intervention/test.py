@@ -37,7 +37,11 @@ def preprocess_features(X):
     outX = pd.DataFrame(index=X.index)  # output dataframe, initially empty
 
     # Check each column
-    for col, col_data in X.iteritems():
+    for col, col_data in X.iteritems():        
+        #if we are dealing with absences then bin descretize it into bands of 10
+        # if col_data.name == 'absences':
+        #    col_data = col_data.apply(lambda x: (int) (x * 1.0 /10))
+
         # If data type is non-numeric, try to replace all yes/no values with 1/0
         if col_data.dtype == object:
             col_data = col_data.replace(['yes', 'no'], [1, 0])
@@ -74,3 +78,81 @@ X_test = X_all.loc[random_test_index]
 y_test = y_all[random_test_index]
 print "Training set: {} samples".format(X_train.shape[0])
 print "Test set: {} samples".format(X_test.shape[0])
+
+
+
+# Train a model
+import time
+
+def train_classifier(clf, X_train, y_train):
+    print "Training {}...".format(clf.__class__.__name__)
+    start = time.time()
+    clf.fit(X_train, y_train)
+    end = time.time()
+    print "Done!\nTraining time (secs): {:.3f}".format(end - start)
+    return end - start
+
+# TODO: Choose a model, import it and instantiate an object
+from sklearn.neighbors import KNeighborsClassifier
+clf = KNeighborsClassifier(n_neighbors=5)
+
+# Fit model to training data
+train_classifier(clf, X_train, y_train)  # note: using entire training set here
+#print clf  # you can inspect the learned model by printing it
+
+# Predict on training set and compute F1 score
+from sklearn.metrics import f1_score
+
+def predict_labels(clf, features, target):
+    print "Predicting labels using {}...".format(clf.__class__.__name__)
+    start = time.time()
+    y_pred = clf.predict(features)
+    end = time.time()
+    print "Done!\nPrediction time (secs): {:.3f}".format(end - start)
+    return (end-start, f1_score(target.values, y_pred, pos_label='yes'))
+
+train_f1_score = predict_labels(clf, X_train, y_train)
+print "F1 score for training set: {}".format(train_f1_score)
+
+# Predict on test data
+print "F1 score for test set: {}".format(predict_labels(clf, X_test, y_test))
+
+# Train and predict using different training set sizes
+def train_predict(clf, X_train, y_train, X_test, y_test):
+    print "------------------------------------------"
+    print "Training set size: {}".format(len(X_train))
+    train_time = train_classifier(clf, X_train, y_train)
+    print "F1 score for training set: {}".format(predict_labels(clf, X_train, y_train))
+    print "F1 score for test set: {}".format(predict_labels(clf, X_test, y_test))
+
+    a = len(X_train)
+    b = train_time
+    c, d = predict_labels(clf, X_train, y_train)
+    e, f = predict_labels(clf, X_test, y_test)
+    return (a, b, c, d, e, f)
+
+results = []
+
+# TODO: Run the helper function above for desired subsets of training data
+# Note: Keep the test set constant
+for max_items in [100, 200, 300]:
+    results.append(train_predict(clf, X_train[:max_items], y_train[:max_items], X_test, y_test))
+
+# TODO: Train and predict using two other models
+from sklearn.naive_bayes import MultinomialNB
+clf = MultinomialNB()
+
+for max_items in [100, 200, 300]:
+    results.append(train_predict(clf, X_train[:max_items], y_train[:max_items], X_test, y_test))
+
+
+# TODO: Train and predict using two other models
+from sklearn.svm import SVC
+clf = SVC()
+
+for max_items in [100, 200, 300]:
+    results.append(train_predict(clf, X_train[:max_items], y_train[:max_items], X_test, y_test))
+
+for l in results:
+    print "{}\t{:.4f}\t{:.4f}\t{:.4f}\t{:.4f}\t{:.4f}".format(*l)
+    #print ["%.4f" % a for a in l]
