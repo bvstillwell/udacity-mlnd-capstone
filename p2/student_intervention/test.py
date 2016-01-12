@@ -30,7 +30,7 @@ y_all = student_data[target_col]  # corresponding targets/labels
 print "\nFeature values:-"
 print X_all.head()  # print the first 5 rows
 
-
+y_all = y_all.replace(['yes', 'no'], [1, 0])
 
 # Preprocess feature columns
 def preprocess_features(X):
@@ -39,8 +39,8 @@ def preprocess_features(X):
     # Check each column
     for col, col_data in X.iteritems():        
         #if we are dealing with absences then bin descretize it into bands of 10
-        # if col_data.name == 'absences':
-        #    col_data = col_data.apply(lambda x: (int) (x * 1.0 /10))
+        if col_data.name == 'absences':
+           col_data = col_data.apply(lambda x: (int) (x * 1.0 /20))
 
         # If data type is non-numeric, try to replace all yes/no values with 1/0
         if col_data.dtype == object:
@@ -57,6 +57,12 @@ def preprocess_features(X):
 
 X_all = preprocess_features(X_all)
 print "Processed feature columns ({}):-\n{}".format(len(X_all.columns), list(X_all.columns))
+
+unique_value_per_feature = [(col, X_all[col].unique()) for col in X_all.columns]
+for a in unique_value_per_feature:
+    print "%s %s" % a
+
+print "y_all", y_all.unique()
 
 
 # First, decide how many training vs test samples you want
@@ -97,8 +103,8 @@ from sklearn.neighbors import KNeighborsClassifier
 clf = KNeighborsClassifier(n_neighbors=5)
 
 # Fit model to training data
-train_classifier(clf, X_train, y_train)  # note: using entire training set here
-#print clf  # you can inspect the learned model by printing it
+# train_classifier(clf, X_train, y_train)  # note: using entire training set here
+# print clf  # you can inspect the learned model by printing it
 
 # Predict on training set and compute F1 score
 from sklearn.metrics import f1_score
@@ -109,13 +115,13 @@ def predict_labels(clf, features, target):
     y_pred = clf.predict(features)
     end = time.time()
     print "Done!\nPrediction time (secs): {:.3f}".format(end - start)
-    return (end-start, f1_score(target.values, y_pred, pos_label='yes'))
+    return (end-start, f1_score(target.values, y_pred, pos_label=1))
 
-train_f1_score = predict_labels(clf, X_train, y_train)
-print "F1 score for training set: {}".format(train_f1_score)
+#train_f1_score = predict_labels(clf, X_train, y_train)
+#print "F1 score for training set: {}".format(train_f1_score)
 
-# Predict on test data
-print "F1 score for test set: {}".format(predict_labels(clf, X_test, y_test))
+# # Predict on test data
+# print "F1 score for test set: {}".format(predict_labels(clf, X_test, y_test))
 
 # Train and predict using different training set sizes
 def train_predict(clf, X_train, y_train, X_test, y_test):
@@ -125,34 +131,75 @@ def train_predict(clf, X_train, y_train, X_test, y_test):
     print "F1 score for training set: {}".format(predict_labels(clf, X_train, y_train))
     print "F1 score for test set: {}".format(predict_labels(clf, X_test, y_test))
 
-    a = len(X_train)
-    b = train_time
-    c, d = predict_labels(clf, X_train, y_train)
-    e, f = predict_labels(clf, X_test, y_test)
-    return (a, b, c, d, e, f)
+    # a = len(X_train)
+    # b = train_time
+    # c, d = predict_labels(clf, X_train, y_train)
+    # e, f = predict_labels(clf, X_test, y_test)
+    # results.append((clf.__class__.__name__, a, b, c, d, e, f))
 
-results = []
+# results = []
 
-# TODO: Run the helper function above for desired subsets of training data
-# Note: Keep the test set constant
-for max_items in [100, 200, 300]:
-    results.append(train_predict(clf, X_train[:max_items], y_train[:max_items], X_test, y_test))
+# # TODO: Run the helper function above for desired subsets of training data
+# # Note: Keep the test set constant
+# for max_items in [100, 200, 300]:
+#     train_predict(clf, X_train[:max_items], y_train[:max_items], X_test, y_test)
 
-# TODO: Train and predict using two other models
-from sklearn.naive_bayes import MultinomialNB
-clf = MultinomialNB()
+# # TODO: Train and predict using two other models
+# from sklearn.naive_bayes import MultinomialNB
+# clf = MultinomialNB()
 
-for max_items in [100, 200, 300]:
-    results.append(train_predict(clf, X_train[:max_items], y_train[:max_items], X_test, y_test))
+# for max_items in [100, 200, 300]:
+#     train_predict(clf, X_train[:max_items], y_train[:max_items], X_test, y_test)
 
 
-# TODO: Train and predict using two other models
-from sklearn.svm import SVC
-clf = SVC()
+# # TODO: Train and predict using two other models
+# from sklearn.svm import SVC
+# clf = SVC()
 
-for max_items in [100, 200, 300]:
-    results.append(train_predict(clf, X_train[:max_items], y_train[:max_items], X_test, y_test))
+# for max_items in [100, 200, 300]:
+#     train_predict(clf, X_train[:max_items], y_train[:max_items], X_test, y_test)
 
-for l in results:
-    print "{}\t{:.4f}\t{:.4f}\t{:.4f}\t{:.4f}\t{:.4f}".format(*l)
-    #print ["%.4f" % a for a in l]
+
+
+# from sklearn.tree import DecisionTreeClassifier
+# from sklearn.ensemble import AdaBoostClassifier
+
+# for max_items in [100, 200, 300]:
+#     train_predict(DecisionTreeClassifier(max_depth=3), X_train[:max_items], y_train[:max_items], X_test, y_test)
+
+# for l in results:
+#     print "{}\t{:.4f}\t{:.4f}\t{:.4f}\t{:.4f}\t{:.4f}\t{:.4f}".format(*l)
+#     #print ["%.4f" % a for a in l]
+
+
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.grid_search import GridSearchCV
+from sklearn import metrics
+
+parameters = {
+    'criterion':('gini', 'entropy'), 
+    #'max_features': range(1, 31),
+    'max_depth': range(1,9),
+    'min_samples_split' : range(2,5)
+    }
+
+scorer = metrics.make_scorer(metrics.accuracy_score)
+clf = DecisionTreeClassifier()
+gs = GridSearchCV(clf, parameters, scoring=scorer)
+gs.fit(X_all, y_all)
+
+#print gs
+#print gs.best_params_
+#best_clf = gs.best_estimator_
+
+max_items = 300
+print "a", y_test.unique()
+print "b", y_train.unique()
+train_predict(clf, X_train[:max_items], y_train[:max_items], X_test, y_test)
+
+best_clf = gs.best_estimator_
+train_predict(best_clf, X_train[:max_items], y_train[:max_items], X_test, y_test)
+
+
+print gs.best_params_
+print gs.best_score_
