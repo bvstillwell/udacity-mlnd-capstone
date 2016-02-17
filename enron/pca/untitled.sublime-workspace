@@ -1,0 +1,644 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"S",
+				"svm	(module)"
+			],
+			[
+				"c",
+				"components_	(statement)"
+			],
+			[
+				"X_t",
+				"X_train	(statement)"
+			],
+			[
+				"x_",
+				"X_train	(statement)"
+			],
+			[
+				"y",
+				"y_train	(statement)"
+			],
+			[
+				"x_t",
+				"X_train	(statement)"
+			],
+			[
+				"cr",
+				"cross_validation	(module)"
+			],
+			[
+				"min",
+				"min_faces_per_person	(param)"
+			],
+			[
+				"col",
+				"columns"
+			],
+			[
+				"f",
+				"fit	(function)"
+			],
+			[
+				"be",
+				"best_score_	(statement)"
+			],
+			[
+				"bes",
+				"best_params_	(statement)"
+			],
+			[
+				"sco",
+				"scores_post	(statement)"
+			],
+			[
+				"__",
+				"__class__	(class)"
+			],
+			[
+				"b",
+				"best_params_	(statement)"
+			],
+			[
+				"X",
+				"X_all	(statement)"
+			],
+			[
+				"hist",
+				"histogram	(function)"
+			],
+			[
+				"cro",
+				"cross_validation	(import)"
+			],
+			[
+				"Tree",
+				"DecisionTreeRegressor"
+			],
+			[
+				"max",
+				"max_depth"
+			],
+			[
+				"skl",
+				"sklearn"
+			],
+			[
+				"make",
+				"make_scorer"
+			],
+			[
+				"mean",
+				"mean_squared_error	(function)"
+			],
+			[
+				"tot",
+				"total_male	(statement)"
+			],
+			[
+				"fma",
+				"female_rej	(statement)"
+			],
+			[
+				"ma",
+				"Male	(statement)"
+			],
+			[
+				"hous",
+				"housing_prices	(statement)"
+			],
+			[
+				"hou",
+				"housing_prices	(statement)"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "my_eigen.py",
+			"settings":
+			{
+				"buffer_size": 3297,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/brad/.config/sublime-text-3/Packages/Anaconda/Anaconda.sublime-settings",
+			"settings":
+			{
+				"buffer_size": 17461,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "	 Ariel Sharon       0.90      0.69      0.78        13	     [[  9   1   0   3   0   0   0]\n     Colin Powell       0.88      0.88      0.88        60	      [  0  53   0   6   0   0   1]\n  Donald Rumsfeld       0.95      0.70      0.81        27	      [  1   0  19   6   1   0   0]\n    George W Bush       0.85      0.97      0.91       146	      [  0   3   1 142   0   0   0]\nGerhard Schroeder       0.95      0.80      0.87        25	      [  0   0   0   2  20   0   3]\n      Hugo Chavez       1.00      0.53      0.70        15	      [  0   2   0   5   0   8   0]\n       Tony Blair       0.89      0.89      0.89        36	      [  0   1   0   3   0   0  32]]",
+			"settings":
+			{
+				"buffer_size": 662,
+				"line_ending": "Unix",
+				"name": "Ariel Sharon       0.90      0.69      0.78"
+			}
+		},
+		{
+			"file": "eigenfaces.py",
+			"settings":
+			{
+				"buffer_size": 4993,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Anaconda Python Builder",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Anaconda Python Builder",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Anaconda Python Builder",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 264.0,
+		"last_filter": "rem",
+		"selected_items":
+		[
+			[
+				"rem",
+				"Package Control: Remove Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"hask",
+				"Set Syntax: Haskell"
+			],
+			[
+				"ha",
+				"Set Syntax: Haskell"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"has",
+				"Set Syntax: Haskell"
+			],
+			[
+				"mark",
+				"Set Syntax: Markdown"
+			],
+			[
+				"mar",
+				"Set Syntax: MultiMarkdown"
+			],
+			[
+				"upp",
+				"Convert Case: Upper Case"
+			],
+			[
+				"pyth",
+				"Set Syntax: Python"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 139.0,
+		"history":
+		[
+			"62*47",
+			"enron_data",
+			"1==1",
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/brad/github/udacity/p3/enron/pca/untitled.sublime-project",
+		"/home/brad/.config/sublime-text-3/Packages/Anaconda/Anaconda.sublime-settings",
+		"/home/brad/.config/sublime-text-3/Packages/SublimePythonIDE/SublimePython.sublime-settings",
+		"/home/brad/.bashrc",
+		"/home/brad/github/udacity/p3/enron/pca/my_eigen.py",
+		"/home/brad/.config/sublime-text-3/Packages/Default/Default (Linux).sublime-keymap",
+		"/home/brad/.config/sublime-text-3/Packages/User/Distraction Free.sublime-settings",
+		"/home/brad/.config/sublime-text-3/Packages/User/JSON.sublime-settings",
+		"/home/brad/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
+		"/home/brad/.config/sublime-text-3/Packages/Default/Preferences.sublime-settings",
+		"/home/brad/.config/sublime-text-3/Packages/User/SublimePython.sublime-settings",
+		"/home/brad/.config/sublime-text-3/Packages/User/SublimeHaskell.sublime-settings",
+		"/home/brad/.local/lib/python2.7/site-packages/sklearn/utils/class_weight.py",
+		"/home/brad/github/udacity/p3/enron/pca/eigenfaces.py",
+		"/home/brad/anaconda/lib/python2.7/site-packages/sklearn/utils/class_weight.py",
+		"/home/brad/.config/user-dirs.dirs",
+		"/home/brad/Documents/Peru.txt",
+		"/f",
+		"/home/brad/github/udacity/p2/student_intervention/README.md",
+		"/home/brad/github/udacity/p2/student_intervention/test.py",
+		"/home/brad/.local/lib/python2.7/site-packages/sklearn/metrics/classification.py",
+		"/home/brad/.local/lib/python2.7/site-packages/sklearn/grid_search.py",
+		"/home/brad/Projects/haskell/learn.hs",
+		"/home/brad/Projects/haskell/    In the expression",
+		"/home/brad/Projects/haskell/a1.hs",
+		"/home/brad/Projects/haskell/    Not in scope",
+		"/home/brad/Projects/haskell/play.hs",
+		"/home/brad/udacity/student_intervention/test.py",
+		"/home/brad/udacity/data.txt",
+		"/home/brad/udacity/machine/boston_housing.py/boston_housing_r2.py",
+		"/home/brad/udacity/machine/boston_housing.py/boston_housing_r1.py",
+		"/usr/lib/python2.7/dist-packages/matplotlib/pyplot.py",
+		"/home/brad/udacity/machine/boston_housing.py/boston_housing.py",
+		"/home/brad/udacity/machine/boston_housing.py/__MACOSX/._boston_housing_students.py",
+		"/home/brad/udacity/machine/boston_housing.py/boston_housing_students.py",
+		"/home/brad/udacity/.gitignore",
+		"/home/brad/udacity/machine/play.py",
+		"/home/brad/tmp/scan.txt",
+		"/home/brad/Documents/speech.txt",
+		"/home/brad/Documents/s2",
+		"/home/brad/tmp/192.168.1.1",
+		"/home/brad/airodump/darkc0de.lst",
+		"/home/brad/anaconda/Examples/bokeh/README.md",
+		"/home/brad/udacity/stroop/stroop.csv",
+		"/home/brad/Documents/darkc0de.lst",
+		"/home/brad/projects/udacity/ud120-projects/tools/startup.py",
+		"/home/brad/projects/udacity/ud120-projects/datasets_questions/explore_enron_data.py"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"[",
+			"]",
+			"inte",
+			"lfw_peple",
+			"In",
+			" ",
+			"vali",
+			"Just",
+			" ",
+			"Training set size",
+			"training set",
+			"Training set",
+			"X_all",
+			"Right",
+			"\n",
+			"Left",
+			"Bx",
+			"BMin",
+			"Bx",
+			"7",
+			"pl.",
+			"max_",
+			"pl.",
+			".7",
+			"O",
+			"x",
+			"(^)",
+			"A",
+			"a",
+			"##",
+			"py.",
+			"performance_metric",
+			"s",
+			"fe",
+			"female",
+			"\\",
+			"), ",
+			",",
+			"\n",
+			"Rejected",
+			"512\nRejected",
+			"\n",
+			"DecisionTreeRegressor",
+			",",
+			"_train",
+			"train",
+			",",
+			"%d",
+			"d",
+			"#",
+			"friend",
+			"travell",
+			" ",
+			"Host",
+			"Nmap",
+			"conq",
+			"Groom’s name",
+			"groom’s name",
+			"Groom’s name",
+			"groom’s name",
+			"bride’s name",
+			"Bride’s name",
+			"bride’s name",
+			"ja",
+			"(y)"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			","
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "my_eigen.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3297,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1634,
+								1634
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 748.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/home/brad/.config/sublime-text-3/Packages/Anaconda/Anaconda.sublime-settings",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 17461,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2927,
+								2927
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1377.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 662,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								662,
+								662
+							]
+						],
+						"settings":
+						{
+							"auto_name": "Ariel Sharon       0.90      0.69      0.78",
+							"default_dir": "/home/brad/github/udacity/p3",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "eigenfaces.py",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 4993,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								568,
+								568
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 714.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 33.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 418.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.haskell_sublime_load":
+	{
+		"height": 148.0
+	},
+	"output.rope_python_documentation":
+	{
+		"height": 157.0
+	},
+	"pinned_build_system": "",
+	"project": "untitled.sublime-project",
+	"replace":
+	{
+		"height": 46.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 217.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
