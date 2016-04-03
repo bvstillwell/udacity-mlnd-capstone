@@ -89,6 +89,7 @@ class Simulator(object):
                 break
 
     def render(self):
+        return
         # Clear screen
         self.screen.fill(self.bg_color)
 
