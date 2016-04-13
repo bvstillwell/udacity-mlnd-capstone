@@ -1,7 +1,7 @@
 import os
 import time
 import random
-import pygame
+#import pygame
 
 class Simulator(object):
     """PyGame-based simulator to create a dynamic environment."""
@@ -34,22 +34,22 @@ class Simulator(object):
         self.last_updated = 0.0
         self.update_delay = update_delay
 
-        pygame.init()
-        self.screen = pygame.display.set_mode(self.size)
+        #pygame.init()
+        #self.screen = pygame.display.set_mode(self.size)
 
-        self.agent_sprite_size = (32, 32)
-        self.agent_circle_radius = 10  # radius of circle, when using simple representation
-        for agent in self.env.agent_states:
-            agent._sprite = pygame.transform.smoothscale(pygame.image.load(os.path.join("images", "car-{}.png".format(agent.color))), self.agent_sprite_size)
-            agent._sprite_size = (agent._sprite.get_width(), agent._sprite.get_height())
+        # self.agent_sprite_size = (32, 32)
+        # self.agent_circle_radius = 10  # radius of circle, when using simple representation
+        # for agent in self.env.agent_states:
+        #     agent._sprite = pygame.transform.smoothscale(pygame.image.load(os.path.join("images", "car-{}.png.bmp".format(agent.color))), self.agent_sprite_size)
+        #     agent._sprite_size = (agent._sprite.get_width(), agent._sprite.get_height())
 
-        self.font = pygame.font.Font(None, 28)
+        #self.font = pygame.font.Font(None, 28)
         self.paused = False
 
     def run(self, n_trials=1):
         self.quit = False
         for trial in xrange(n_trials):
-            print "Simulator.run(): Trial {}".format(trial)  # [debug]
+            # print "Simulator.run(): Trial {}".format(trial)  # [debug]
             self.env.reset()
             self.current_time = 0.0
             self.last_updated = 0.0
@@ -59,26 +59,26 @@ class Simulator(object):
                 #print "Simulator.run(): current_time = {:.3f}".format(self.current_time)
                 try:
                     # Handle events
-                    for event in pygame.event.get():
-                        if event.type == pygame.QUIT:
-                            self.quit = True
-                        elif event.type == pygame.KEYDOWN:
-                            if event.key == 27:  # Esc
-                                self.quit = True
-                            elif event.unicode == u' ':
-                                self.paused = True
+                    # for event in pygame.event.get():
+                    #     if event.type == pygame.QUIT:
+                    #         self.quit = True
+                    #     elif event.type == pygame.KEYDOWN:
+                    #         if event.key == 27:  # Esc
+                    #             self.quit = True
+                    #         elif event.unicode == u' ':
+                    #             self.paused = True
 
                     if self.paused:
                         self.pause()
 
                     # Update environment
-                    if self.current_time - self.last_updated >= self.update_delay:
-                        self.env.step()
-                        self.last_updated = self.current_time
+                    #if self.current_time - self.last_updated >= self.update_delay:
+                    self.env.step()
+                    self.last_updated = self.current_time
 
                     # Render and sleep
-                    self.render()
-                    pygame.time.wait(self.frame_delay)
+                    #self.render()
+                    #pygame.time.wait(self.frame_delay)
                 except KeyboardInterrupt:
                     self.quit = True
                 finally:
@@ -89,6 +89,7 @@ class Simulator(object):
                 break
 
     def render(self):
+        return
         # Clear screen
         self.screen.fill(self.bg_color)
 

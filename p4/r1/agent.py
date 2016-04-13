@@ -60,7 +60,6 @@ class LearningAgent(Agent):
         state = self.lv.create_state(
             Light.GREEN if inputs["light"] == "green" else Light.RED,
             self.next_waypoint,
-            deadline
         )
         return state
 
@@ -76,6 +75,9 @@ class LearningAgent(Agent):
         if self.last_values is not None:
             s_last, a_last, r_last = self.last_values
             self.lv.update_q_value(s_last, a_last, r_last, s)
+
+            print "Details s:%s a:%s: r:%s s':%s" % (s_last, a_last, r_last, s)
+            self.lv.print_info()
 
         # ***********************************
         # .
@@ -100,20 +102,21 @@ class LearningAgent(Agent):
         # Collect data for stats checking
         self.lv.record_result(r)
 
-
 class LearningVariables:
     def __init__(self,
                  gamma,
                  learning_rate,
                  random_val,
                  n_trials,
-                 q_value_init):
+                 q_value_init,
+                 show_q_matrix):
         self.gamma = round(gamma, 5)
         self.learning_rate = round(learning_rate, 5)
-        self.result = 0
         self.n_trials = n_trials
         self.q_value_init = q_value_init
         self.random_val = random_val
+        self.show_q_matrix = show_q_matrix
+        self.results = []
 
         # Variables for the trial
     def reset(self):
@@ -124,19 +127,22 @@ class LearningVariables:
     def new_trial(self):
         self.step = 1
         self.trial += 1
+        self.trial_rewards = []
+        self.results.append(self.trial_rewards)
 
-    def do_random_action(self, step):
+    def do_random_action(self):
         """Return True if we should do a random action"""
+        if self.trial > self.n_trials * .7:
+            return False
         return random.random() < self.random_val
 
     def record_result(self, reward):
         # Record rewards when we get to the destination
-        if reward >= 10:
-            self.result += 1
+        self.trial_rewards.append(reward)
         self.step += 1
 
-    def create_state(self, light, waypoint, deadline):
-        state = (light, waypoint, deadline)
+    def create_state(self, light, waypoint):
+        state = (light, waypoint)
         if state not in self.q_values:
             self.init_q_value(state)
         return state
@@ -164,7 +170,8 @@ class LearningVariables:
 
     def choose_action(self, state):
         # Add some randomness to aid exploration
-        if self.do_random_action(self.trial):
+        if self.do_random_action():
+            print "Random action!"
             actions_to_choose_from = Actions.ALL
         else:
             max_q, actions_to_choose_from = self.get_best_action(state)
@@ -191,23 +198,26 @@ class LearningVariables:
             ((1 - self.learning_rate) * self.q_values[s][a]) +\
             (self.learning_rate * s_utility)
 
-        #print str((s, a, r, s_prime))
-        #self.print_info()
-
     def print_info(self):
-        for s in sorted(self.q_values):
-            max_q, best_actions = self.get_best_action(s)
-            values = ["%s:%+3.3f" % (a, self.q_values[s][a])
-                      for a in Actions.ALL]
-            print "%40s, %70s, %s" % (s, values, best_actions)
-        print
+        print "-" * 150
+        print "Total_trials:%s, Trial no:%s, Step:%s" % (
+            self.n_trials, self.trial, self.step)
+        print "Trial rewards:%s" % self.trial_rewards
+        if self.show_q_matrix:
+            print "-" * 150
+            print "%40s, %70s, %s" % ("State|", "Q-values |", "Best action")
+            for s in sorted(self.q_values):
+                max_q, best_actions = self.get_best_action(s)
+                values = ["%s:%+3.3f" % (a, self.q_values[s][a])
+                          for a in Actions.ALL]
+                print "%40s, %70s, %s" % (s, values, best_actions)
+            print
 
     def __str__(self):
         result = [str(a) for a in [self.gamma,
                                    self.learning_rate,
                                    self.random_val,
-                                   self.q_value_init,
-                                   self.result]]
+                                   self.q_value_init]]
         return str(result)
 
 
@@ -229,25 +239,26 @@ def thread_run(learning_variables):
     return learning_variables
 
 
-def run():
+def run_threaded():
     """Run the agent for a finite number of trials."""
-    gamma_range = range_me(0.0, 1.0, 10)
-    lr_range = range_me(0.0, 1.0, 10)
-    n_trials = 50
-    n_times = 2
+    range1 = range_me(0.0, 1.0, 10)
+    range2 = range_me(-5.0, 5.0, 10)
+    n_trials = 10
+    n_times = 1
 
-    print gamma_range
-    print lr_range
+    print range1
+    print range2
     learning_variables = []
-    for gamma in gamma_range:
-        for learning_rate in lr_range:
+    for random_val in range1:
+        for q_value_init in range2:
             for a in range(n_times):
                 lr = LearningVariables(
-                    gamma=gamma,
-                    learning_rate=learning_rate,
-                    random_val=0.2,
+                    gamma=0.2,
+                    learning_rate=0.1,
+                    random_val=random_val,
                     n_trials=n_trials,
-                    q_value_init=2.0)
+                    q_value_init=q_value_init,
+                    show_q_matrix=False)
                 learning_variables.append(lr)
 
     p = Pool()
@@ -256,15 +267,17 @@ def run():
     p.join()
     print "Finished"
 
-    all_results = [(a.gamma,
-                    a.learning_rate,
-                    a.result) for a in results]
+    all_results = [
+        (a.q_value_init, a.random_val, int(sum([sum(x) for x in a.results])))
+        for a in results]
+
+    print all_results
 
     with open('results.csv', 'wb') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerows(all_results)
 
-    df = pd.DataFrame(all_results, columns=["g", "lr", "res"])
+    df = pd.DataFrame(all_results, columns=["q_init", "rand_val", "res"])
     show(df)
 
 
@@ -274,6 +287,27 @@ def show(df):
     df2 = df1.pivot(index='g', columns='lr', values='res')
     sns.heatmap(df2, annot=True, fmt="d")
     plt.show()
+
+
+def run():
+    """Run the agent for a finite number of trials."""
+
+    learning_variables = LearningVariables(
+        gamma=0.2,
+        learning_rate=0.1,
+        random_val=.2,
+        n_trials=100,
+        q_value_init=2.0,
+        show_q_matrix=False)
+
+    # Set up environment and agent
+    e = Environment()  # create environment (also adds some dummy traffic)
+    a = e.create_agent(LearningAgent, learning_variables)  # create agent
+    e.set_primary_agent(a, enforce_deadline=False)  # set agent to track
+
+    # Now simulate it
+    sim = Simulator(e, update_delay=0.0)  # reduce update_delay to speed up simulation
+    sim.run(n_trials=learning_variables.n_trials)  # press Esc or close pygame window to quit
 
 if __name__ == '__main__':
     run()

@@ -76,8 +76,8 @@ class LearningAgent(Agent):
             s_last, a_last, r_last = self.last_values
             self.lv.update_q_value(s_last, a_last, r_last, s)
 
-            print "Details s:%s a:%s: r:%s s':%s" % (s_last, a_last, r_last, s)
-            self.lv.print_info()
+            #print "Details s:%s a:%s: r:%s s':%s" % (s_last, a_last, r_last, s)
+            #self.lv.print_info()
 
         # ***********************************
         # .
@@ -171,7 +171,7 @@ class LearningVariables:
     def choose_action(self, state):
         # Add some randomness to aid exploration
         if self.do_random_action():
-            print "Random action!"
+            # print "Random action!"
             actions_to_choose_from = Actions.ALL
         else:
             max_q, actions_to_choose_from = self.get_best_action(state)
@@ -282,9 +282,9 @@ def run_threaded():
 
 
 def show(df):
-    grouped = df.groupby(["g", "lr"])
-    df1 = grouped.sum().reset_index()[["g", "lr", "res"]]
-    df2 = df1.pivot(index='g', columns='lr', values='res')
+    grouped = df.groupby(["q_init", "rand_val"])
+    df1 = grouped.sum().reset_index()[["q_init", "rand_val", "res"]]
+    df2 = df1.pivot(index='q_init', columns='rand_val', values='res')
     sns.heatmap(df2, annot=True, fmt="d")
     plt.show()
 
