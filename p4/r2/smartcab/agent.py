@@ -2,13 +2,11 @@ from __future__ import print_function
 import pandas as pd
 from multiprocessing.dummy import Pool
 import time
-import csv
 import random
 from environment import Agent, Environment
 from planner import RoutePlanner
 from simulator import Simulator
 from collections import namedtuple
-from threading import Timer
 
 
 class Actions:
