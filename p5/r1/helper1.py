@@ -144,16 +144,11 @@ def draw_info(df_in, windows):
 
     #df_all = pd.concat([df, df_dr, df_dr_rm], axis=1)
 
-# df_dr = calc_daily_ret(df_train)
-# windows = [2, 7, 30, 180]
-# df_rw = calc_rolling_averages(df_dr, windows)
-
-# df_y = create_y_labels(df_dr)
 
 li('fookit, lets see is we can predict')
 from sklearn.cross_validation import KFold
 
-from sklearn.grid_search import GridSearchCV
+
 
 
 def test_train(X_in, y_in, clf, param_grid, columns=None):
@@ -201,3 +196,36 @@ def create_y_labels(df_in, days_ahead=1, threshold=0.):
     li("Create the y labels vector")
     df_y = (df_in.shift(-days_ahead) > threshold) * 1. + 1
     return df_y
+
+
+def train(clf, X_train, y_train, param_grid=None):
+    logging.debug(X_train.shape)
+    logging.debug(y_train.shape)
+    logging.debug(y_train.value_counts())
+
+    if param_grid is not None:
+        from sklearn.grid_search import GridSearchCV
+        gs = GridSearchCV(clf, param_grid)
+        gs.fit(X_train, y_train)
+        clf = gs.best_estimator_
+    else:
+        clf.fit(X_train, y_train)
+
+    return clf
+
+
+def test(clf, X_test, y_test):
+    from sklearn.metrics import f1_score
+    from sklearn.metrics import classification_report
+    logging.debug(clf)
+
+    pred_actual = clf.predict(X_test)
+    logging.info("Actual")
+    logging.info(classification_report(y_test, pred_actual))
+
+    logging.info("random sample")
+    pred_sample = y_test.sample(y_test.shape[0])
+    logging.info(classification_report(y_test, pred_sample))
+
+    return f1_score(y_test, pred_actual)
+
