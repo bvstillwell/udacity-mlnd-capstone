@@ -42,7 +42,7 @@ currencies = {
 }
 
 
-def load_and_prepare_data():
+def load_and_prepare_data(data_start_date, data_end_date):
     li("Load currencies")
     df_curr = download_quandl([currencies[k]
                                for k in currencies], 'currencies')
@@ -77,7 +77,9 @@ def load_and_prepare_data():
     ld(df_concat.isnull().sum())
     df_concat.fillna(method='ffill', inplace=True)
     ld(df_concat.isnull().sum())
-    return df_concat
+
+    df_train = set_date_range(df_concat, data_start_date, data_end_date)
+    return df_train
 
 
 def set_date_range(df, start_date, end_date):
@@ -89,41 +91,64 @@ def set_date_range(df, start_date, end_date):
     ld(df.head())
     return df
 
-# df_raw = load_and_prepare_data()
 
-# start_date = '2001-01-04'
-# end_date = '2016-01-04'
+# def add_extra_features(df, func, **kwargs):
+#     if kwargs:
+#         df_new = func(df, **kwargs)
+#     else:
+#         df_new = func(df)
+#     df_X = pd.concat([df, df_new], axis=1)
+#     return df_X
+
+windows = [2, 7, 30, 90]
+data_start_date = '2001-01-04'
+data_end_date = '2016-01-04'
 # df_train = set_date_range(df_raw, start_date, end_date)
+days_ahead = [1, 7, 30, 90]
 
 
 def calc_daily_ret(df):
     li("calculate daily returns")
-    # calculate dailt returns
+    # Todays value divided by yesterdays
     df_dr = (df / df.shift(1)) - 1
     df_dr.columns = ["%s_%s" % (col, 'dr') for col in df.columns]
-    df_dr.fillna(method='bfill', inplace=True)
+    # First row must be 0
+    df_dr.iloc[0] = 0
     return df_dr
 
 
-def calc_rolling_averages(df_in, windows):
-    li("caluclate rolling averages")
-    # caluclate rolling averages
+def calc_rolling_func(df_in, windows, func, prefix):
+    li("caluclate rolling averages:" + prefix)
+    new_columns = []
+    for window in windows:
+        new_df = func(df_in, window)
+        new_df.columns = ["%s_%s_%s" % (col, prefix, window)
+                          for col in new_df.columns]
+        new_df.iloc[:window-1] = 0
+        #new_df.fillna(method='bfill', inplace=True)
+        #new_df.fillna(method='ffill', inplace=True)
+        new_columns.append(new_df)
 
-    def calc_rolling_mean(df_in, windows):
-        new_columns = []
-        for window in windows:
-            new_df = pd.rolling_mean(df_in, window)
-            new_df.columns = ["%s_%s" % (col, window)
-                              for col in new_df.columns]
-            new_df.fillna(method='bfill', inplace=True)
-            new_columns.append(new_df)
+    result = pd.concat(new_columns, axis=1)
+    return result
 
-        result = pd.concat(new_columns, axis=1)
-        return result
 
-    # Get rolling averages from daily returns
-    df_dr_rm = calc_rolling_mean(df_in, windows)
-    return df_dr_rm
+def calc_future_daily_ret(df_in, days_ahead=1):
+    # Value from n days ahead divided by todays value
+    li("Create the y labels vector")
+    df_y = (df_in.shift(-days_ahead) / df_in) - 1
+    # We can't speak for the future, so set the values to 0
+    df_y.iloc[-days_ahead:] = 0
+    return df_y
+
+
+def calc_future_returns(df_in, windows):
+    result = pd.DataFrame()
+    for window in windows:
+        ud = calc_future_daily_ret(df_in, days_ahead=window)
+        result = pd.concat([result, ud], axis=1)
+        result = result.rename(index=str, columns={ud.name:"%s_%s" % (ud.name, window)})
+    return result
 
 
 def draw_info(df_in, windows):
@@ -179,10 +204,8 @@ def test_train(X_in, y_in, clf, param_grid, columns=None):
 
 
 def load_and_calculate():
-    df_raw = load_and_prepare_data()
-    start_date = '2001-01-04'
-    end_date = '2016-01-04'
-    df_train = set_date_range(df_raw, start_date, end_date)
+    df_train = load_and_prepare_data(data_start_date, data_end_date)
+
     df_dr = calc_daily_ret(df_train)
     windows = [2, 7, 30, 180]
     df_rw = calc_rolling_averages(df_dr, windows)
@@ -191,11 +214,15 @@ def load_and_calculate():
     return df_X
 
 
-def create_y_labels(df_in, days_ahead=1, threshold=0.):
-    # Extract the labels vector
-    li("Create the y labels vector")
-    df_y = (df_in.shift(-days_ahead) > threshold) * 1. + 1
-    return df_y
+def do_window_plot(df_in, window, title):
+    do_plot(df_in[[col for col in df_in.columns.values if window in col]], title)
+
+
+def do_plot(df_in, title, do_plot=True):
+    ax = df_in.plot(figsize=(15,10))
+    plt.title(title)
+    if do_plot:
+        plt.show()
 
 
 def train(clf, X_train, y_train, param_grid=None):
@@ -229,3 +256,13 @@ def test(clf, X_test, y_test):
 
     return f1_score(y_test, pred_actual)
 
+if __name__ == '__main__':
+    import numpy as np
+    values = [ 0.,-0.0027907,0.00223881,-0.00316456,-0.00392157,-0.00712411,-0.0043429]
+    print np.std(values, ddof=1)
+    print np.mean(values)
+    values = [ 0.,-0.0027907,0.00223881,-0.00316456,-0.00392157,-0.00712411]
+
+    values = [ 0.,-0.0027907]
+    print np.std(values, ddof=1)
+    print np.mean(values)

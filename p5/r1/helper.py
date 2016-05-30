@@ -45,7 +45,7 @@ currencies = {
 }
 
 
-def load_and_prepare_data():
+def load_and_prepare_data(data_start_date, data_end_date):
     lm("Load currencies")
     df_curr = download_quandl([currencies[k]
                                for k in currencies], 'currencies')
@@ -80,7 +80,9 @@ def load_and_prepare_data():
     logging.debug(df_concat.isnull().sum())
     df_concat.fillna(method='ffill', inplace=True)
     logging.debug(df_concat.isnull().sum())
-    return df_concat
+
+    df_result = set_date_range(df_concat, data_start_date, data_end_date)
+    return df_result
 
 
 def set_date_range(df, start_date, end_date):
