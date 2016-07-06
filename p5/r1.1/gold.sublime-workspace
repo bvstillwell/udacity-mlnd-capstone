@@ -1,0 +1,985 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"rolling_S",
+				"rolling_std	statement"
+			],
+			[
+				"roll",
+				"rolling_mean"
+			],
+			[
+				"data_",
+				"data_end_date	statement"
+			],
+			[
+				"index",
+				"index_label	param"
+			],
+			[
+				"key",
+				"key_name"
+			],
+			[
+				"at",
+				"attrib	statement"
+			],
+			[
+				"paren",
+				"parent_keys	param"
+			],
+			[
+				"finish",
+				"finished_count	statement"
+			],
+			[
+				"res",
+				"results_filename"
+			],
+			[
+				"fin",
+				"finished_count"
+			],
+			[
+				"n",
+				"no_samples	param"
+			],
+			[
+				"sh",
+				"show_step_info	param"
+			],
+			[
+				"max_",
+				"max_s_prime	statement"
+			],
+			[
+				"show",
+				"show_q_matrix	param"
+			],
+			[
+				"from",
+				"from_world	function"
+			],
+			[
+				"map",
+				"map_dict	statement"
+			],
+			[
+				"Fr",
+				"from_world	function"
+			],
+			[
+				"Wa",
+				"WaypointDir	class"
+			],
+			[
+				"F",
+				"FORWARD	statement"
+			],
+			[
+				"sho",
+				"show_step_info"
+			],
+			[
+				"states",
+				"states_to_search	statement"
+			],
+			[
+				"pr",
+				"print_q_matrix"
+			],
+			[
+				"show_",
+				"show_q_update	statement"
+			],
+			[
+				"lear",
+				"learning_variables	statement"
+			],
+			[
+				"runt",
+				"run_test	function"
+			],
+			[
+				"fini",
+				"finished_count	globalstmt"
+			],
+			[
+				"learning",
+				"learning_rate"
+			],
+			[
+				"tri",
+				"trial	statement"
+			],
+			[
+				"rest",
+				"results	statement"
+			],
+			[
+				"trial",
+				"trial_rewards	statement"
+			],
+			[
+				"learn",
+				"learning_variables"
+			],
+			[
+				"q_v",
+				"q_value_init	statement"
+			],
+			[
+				"rand",
+				"random_val"
+			],
+			[
+				"ne",
+				"new_trial"
+			],
+			[
+				"print",
+				"print_info"
+			],
+			[
+				"A",
+				"ALL	statement"
+			],
+			[
+				"R",
+				"RED	statement"
+			],
+			[
+				"lea",
+				"learning_variables"
+			],
+			[
+				"ini",
+				"init_q_value_state	function"
+			],
+			[
+				"create",
+				"create_state"
+			],
+			[
+				"all",
+				"all_results	statement"
+			],
+			[
+				"ler",
+				"learning_variables	param"
+			],
+			[
+				"st",
+				"step	function"
+			],
+			[
+				"rannd",
+				"random_action_func	statement"
+			],
+			[
+				"le",
+				"learning_rate_func	statement"
+			],
+			[
+				"Va",
+				"VariableDecay	class"
+			],
+			[
+				"learni",
+				"learning_rate_func"
+			],
+			[
+				"ran",
+				"random_action_func"
+			],
+			[
+				"po",
+				"power	param"
+			],
+			[
+				"gamma",
+				"gamma_r	statement"
+			],
+			[
+				"lr",
+				"lr_range	statement"
+			],
+			[
+				"gam",
+				"gamma_range	statement"
+			],
+			[
+				"random",
+				"random_action	function"
+			],
+			[
+				"bes",
+				"best_actions	statement"
+			],
+			[
+				"max",
+				"max_q	statement"
+			],
+			[
+				"result",
+				"results	statement"
+			],
+			[
+				"pri",
+				"print_info	function"
+			],
+			[
+				"get",
+				"get_state	function"
+			],
+			[
+				"upd",
+				"update_q_values	function"
+			],
+			[
+				"acti",
+				"action_to_do	statement"
+			],
+			[
+				"choo",
+				"choose_best_action	function"
+			],
+			[
+				"act",
+				"actions_to_choose_from	statement"
+			],
+			[
+				"cu",
+				"current_state	statement"
+			],
+			[
+				"q",
+				"q_value	statement"
+			],
+			[
+				"gree",
+				"green_light"
+			],
+			[
+				"gr",
+				"green_light"
+			],
+			[
+				"exc",
+				"Exception	class"
+			],
+			[
+				"ra",
+				"random	statement"
+			],
+			[
+				"new",
+				"new_q_value	statement"
+			],
+			[
+				"curren",
+				"current_state"
+			],
+			[
+				"min",
+				"min_val	statement"
+			],
+			[
+				"ac",
+				"action	statement"
+			],
+			[
+				"action",
+				"Actions	class"
+			],
+			[
+				"a",
+				"all	statement"
+			],
+			[
+				"fo",
+				"forward	statement"
+			],
+			[
+				"alpha",
+				"alphas_	statement"
+			],
+			[
+				"expl",
+				"explained_variance_ratio_	statement"
+			],
+			[
+				"n_",
+				"n_col	param"
+			],
+			[
+				"pred",
+				"prediction_titles	statement"
+			],
+			[
+				"S",
+				"svm	(module)"
+			],
+			[
+				"c",
+				"components_	(statement)"
+			],
+			[
+				"X_t",
+				"X_train	(statement)"
+			],
+			[
+				"x_",
+				"X_train	(statement)"
+			],
+			[
+				"y",
+				"y_train	(statement)"
+			],
+			[
+				"x_t",
+				"X_train	(statement)"
+			],
+			[
+				"cr",
+				"cross_validation	(module)"
+			],
+			[
+				"col",
+				"columns"
+			],
+			[
+				"f",
+				"fit	(function)"
+			],
+			[
+				"be",
+				"best_score_	(statement)"
+			],
+			[
+				"sco",
+				"scores_post	(statement)"
+			],
+			[
+				"__",
+				"__class__	(class)"
+			],
+			[
+				"b",
+				"best_params_	(statement)"
+			],
+			[
+				"X",
+				"X_all	(statement)"
+			],
+			[
+				"hist",
+				"histogram	(function)"
+			],
+			[
+				"cro",
+				"cross_validation	(import)"
+			],
+			[
+				"Tree",
+				"DecisionTreeRegressor"
+			],
+			[
+				"skl",
+				"sklearn"
+			],
+			[
+				"make",
+				"make_scorer"
+			],
+			[
+				"mean",
+				"mean_squared_error	(function)"
+			],
+			[
+				"tot",
+				"total_male	(statement)"
+			],
+			[
+				"fma",
+				"female_rej	(statement)"
+			],
+			[
+				"ma",
+				"Male	(statement)"
+			],
+			[
+				"hous",
+				"housing_prices	(statement)"
+			],
+			[
+				"hou",
+				"housing_prices	(statement)"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "helper1.py",
+			"settings":
+			{
+				"buffer_size": 7278,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Anaconda Python Builder",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Anaconda Python Builder",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 327.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"space",
+				"Indentation: Convert to Spaces"
+			],
+			[
+				"package",
+				"Package Control: Remove Package"
+			],
+			[
+				"build",
+				"Build output always at top"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"ma",
+				"Pandoc: Render Markdown to temp PDF and View"
+			],
+			[
+				"mar",
+				"Pandoc: Render Markdown to temp PDF and View"
+			],
+			[
+				"mark",
+				"Pandoc: Render Markdown to temp PDF and View"
+			],
+			[
+				"markd",
+				"Pandoc: Render Markdown to temp PDF and View"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"spell",
+				"Google Spell Check"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"rem",
+				"Package Control: Remove Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"hask",
+				"Set Syntax: Haskell"
+			],
+			[
+				"ha",
+				"Set Syntax: Haskell"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"has",
+				"Set Syntax: Haskell"
+			],
+			[
+				"upp",
+				"Convert Case: Upper Case"
+			],
+			[
+				"pyth",
+				"Set Syntax: Python"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 176.0,
+		"history":
+		[
+			"str('forward')",
+			"str(None)",
+			"show_panel",
+			"output.exec",
+			"62*47",
+			"enron_data",
+			"1==1",
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/brad/github/udacity/p5/r1"
+	],
+	"file_history":
+	[
+		"/home/brad/github/udacity/p5/r1/helper1.py",
+		"/home/brad/github/udacity/p5/r1/helper.py",
+		"/media/brad/38a5edc1-7242-4ce3-aa76-fa6184476cb2/brad/Projects/knniris.py",
+		"/media/brad/38a5edc1-7242-4ce3-aa76-fa6184476cb2/brad/Documents/readme.txt",
+		"/home/brad/github/udacity/p5/trading/p.py",
+		"/home/brad/Downloads/Untitled Folder/offshore_leaks_csvs-20160513/Addresses.csv",
+		"/usr/lib/python2.7/dist-packages/pandas/core/internals.py",
+		"/home/brad/github/udacity/pygold/iterator.py",
+		"/home/brad/doc/scikit-learn-0.17/doc/README",
+		"/home/brad/.config/sublime-text-3/Packages/Anaconda/Anaconda.sublime-settings",
+		"/home/brad/github/tab.xml.downloader/learn.py",
+		"/home/brad/github/tab.xml.downloader/transform.py",
+		"/home/brad/anaconda/lib/python2.7/site-packages/sqlalchemy/sql/schema.py",
+		"/home/brad/github/tab.xml.downloader/meeting.sql",
+		"/home/brad/anaconda/lib/python2.7/site-packages/pandas/io/sql.py",
+		"/home/brad/anaconda/lib/python2.7/site-packages/pandas/core/generic.py",
+		"/home/brad/github/tab.xml.downloader/tab.results/2014-07-08.xml",
+		"/home/brad/github/tab.xml.downloader/tab.results/2012-06-25.xml",
+		"/home/brad/github/udacity/p4/r2/smartcab/agent.py",
+		"/home/brad/.config/sublime-text-3/Packages/User/SmartMarkdown.sublime-settings",
+		"/home/brad/github/udacity/p4/r2/Training a smartcab with q-learning.md",
+		"/home/brad/.config/sublime-text-3/Packages/SmartMarkdown/SmartMarkdown.sublime-settings",
+		"/home/brad/.config/sublime-text-3/Packages/SmartMarkdown/Default.sublime-keymap",
+		"/home/brad/github/udacity/p4/r2/some.csl",
+		"/home/brad/github/udacity/p4/r2/log.txt",
+		"/home/brad/github/udacity/p4/r2_old/smartcab/results_t100_s1000_20160416-124600.csv",
+		"/home/brad/github/udacity/p4/r2_old/smartcab/agent.py",
+		"/home/brad/github/udacity/p4/r2/tmp.txt",
+		"/home/brad/github/udacity/p4/r2/agent.py",
+		"/home/brad/github/udacity/p4/r1/smartcab/agent.py",
+		"/home/brad/github/udacity/p4/r2/smartcab/environment.py",
+		"/home/brad/github/udacity/p4/r1/smartcab/results.csv",
+		"/home/brad/github/udacity/p4/r1/smartcab/simulator.py",
+		"/home/brad/github/udacity/p4/r1/smartcab/environment.py",
+		"/home/brad/github/udacity/p4/r1/smartcab/results2.csv",
+		"/home/brad/github/udacity/p4/r1/smartcab/planner.py",
+		"/home/brad/anaconda/lib/python2.7/random.py",
+		"/home/brad/github/udacity/p4/r1/questions.txt",
+		"/home/brad/github/udacity/p4/r1/smartcab/project.py",
+		"/home/brad/Documents/graph.py",
+		"/home/brad/github/udacity/p3/enron/pca/my_eigen.py",
+		"/home/brad/github/udacity/p3/enron/pca/eigenfaces.py",
+		"/home/brad/github/udacity/p3/enron/pca/untitled.sublime-project",
+		"/home/brad/.config/sublime-text-3/Packages/SublimePythonIDE/SublimePython.sublime-settings",
+		"/home/brad/.bashrc",
+		"/home/brad/.config/sublime-text-3/Packages/Default/Default (Linux).sublime-keymap",
+		"/home/brad/.config/sublime-text-3/Packages/User/Distraction Free.sublime-settings",
+		"/home/brad/.config/sublime-text-3/Packages/User/JSON.sublime-settings",
+		"/home/brad/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
+		"/home/brad/.config/sublime-text-3/Packages/Default/Preferences.sublime-settings",
+		"/home/brad/.config/sublime-text-3/Packages/User/SublimePython.sublime-settings",
+		"/home/brad/.config/sublime-text-3/Packages/User/SublimeHaskell.sublime-settings",
+		"/home/brad/.local/lib/python2.7/site-packages/sklearn/utils/class_weight.py",
+		"/home/brad/anaconda/lib/python2.7/site-packages/sklearn/utils/class_weight.py",
+		"/home/brad/.config/user-dirs.dirs",
+		"/home/brad/Documents/Peru.txt",
+		"/f",
+		"/home/brad/github/udacity/p2/student_intervention/README.md",
+		"/home/brad/github/udacity/p2/student_intervention/test.py",
+		"/home/brad/.local/lib/python2.7/site-packages/sklearn/metrics/classification.py",
+		"/home/brad/.local/lib/python2.7/site-packages/sklearn/grid_search.py",
+		"/home/brad/Projects/haskell/learn.hs",
+		"/home/brad/Projects/haskell/    In the expression",
+		"/home/brad/Projects/haskell/a1.hs",
+		"/home/brad/Projects/haskell/    Not in scope",
+		"/home/brad/Projects/haskell/play.hs",
+		"/home/brad/udacity/student_intervention/test.py",
+		"/home/brad/udacity/data.txt",
+		"/home/brad/udacity/machine/boston_housing.py/boston_housing_r2.py",
+		"/home/brad/udacity/machine/boston_housing.py/boston_housing_r1.py",
+		"/usr/lib/python2.7/dist-packages/matplotlib/pyplot.py",
+		"/home/brad/udacity/machine/boston_housing.py/boston_housing.py",
+		"/home/brad/udacity/machine/boston_housing.py/__MACOSX/._boston_housing_students.py",
+		"/home/brad/udacity/machine/boston_housing.py/boston_housing_students.py",
+		"/home/brad/udacity/.gitignore",
+		"/home/brad/udacity/machine/play.py",
+		"/home/brad/tmp/scan.txt",
+		"/home/brad/Documents/speech.txt",
+		"/home/brad/Documents/s2",
+		"/home/brad/tmp/192.168.1.1",
+		"/home/brad/airodump/darkc0de.lst",
+		"/home/brad/anaconda/Examples/bokeh/README.md",
+		"/home/brad/udacity/stroop/stroop.csv",
+		"/home/brad/Documents/darkc0de.lst",
+		"/home/brad/projects/udacity/ud120-projects/tools/startup.py",
+		"/home/brad/projects/udacity/ud120-projects/datasets_questions/explore_enron_data.py"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			".,*.xml",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"df_y",
+			" +",
+			"days_ahead",
+			"create_y_labels",
+			"load_and_prepare_data",
+			"load_a",
+			"calc_rolling_averages",
+			"windo",
+			"inve",
+			"04",
+			"create_y_labels",
+			"test",
+			"print",
+			"train",
+			"test_",
+			"test_train",
+			"load_and_calculate",
+			"logging.debug",
+			"lm(",
+			"print *(.*)\\\\n",
+			"print *(.*\\n)",
+			"print *(.*)\\n",
+			"print +(.*)",
+			"print f1_score(y_test, pred_sample)\\n\",",
+			"print +(.*)",
+			"$E2",
+			"raro",
+			"Wellington",
+			"welling",
+			"zeal",
+			">>>",
+			"2016",
+			"len",
+			"jockey=\"\"",
+			"3Y (?!MDN)",
+			"3Y MDN-SW",
+			"db_filename",
+			"SELECT * \nFROM meetings ms\nINNER JOIN meeting m ON m.x_meetings_id = ms.id\nINNER JOIN race r ON r.x_meeting_id = m.id\nINNER JOIN placing p ON p.x_race_id = r.id\nWHERE ms.date = \"2012-06-25\"\nAND m.number = 3\nAND r.number = 2;\n",
+			"_create_sql_schema",
+			"index",
+			"SQLiteTable",
+			"_create_sql_schema",
+			"SQLTable",
+			"pandasSQL_builder",
+			"id",
+			"id\"",
+			")\n",
+			"load_xml_into_table",
+			"e",
+			"load_xml_into_table",
+			"\n\n\n",
+			"\n\n",
+			"=>",
+			"]",
+			"'",
+			"')",
+			" '",
+			"'",
+			"',",
+			"'(.)'",
+			"'L'",
+			"('",
+			"wF",
+			" ['N:+",
+			"['N:",
+			"None, 'forward', 'left', 'right']",
+			"'None",
+			"          ",
+			"print ",
+			"r:72",
+			", ",
+			"print",
+			"update",
+			"s_prime",
+			"s_primt",
+			"create_state",
+			"s_prime_utility",
+			"update_q",
+			"L",
+			"xL",
+			"L",
+			"record",
+			"random_val",
+			"random a",
+			"show_q_matrix",
+			"rese",
+			"print_",
+			"detail",
+			"random",
+			"rai",
+			"get_state",
+			"create_state",
+			"try",
+			"init",
+			"try",
+			"init_q_value",
+			"get_state",
+			"create_s",
+			"print_",
+			"create_state",
+			"create_s",
+			"print",
+			"do_random_action",
+			"results",
+			"reco",
+			"print_",
+			"print",
+			"deadl",
+			"print",
+			"print_",
+			"create_s",
+			"print",
+			"rand",
+			"deaDL",
+			"create_state",
+			"gamma",
+			"rand",
+			"winn",
+			"print_",
+			"record_result",
+			"get_l",
+			"print_",
+			"stay",
+			"create_state",
+			"()\n",
+			"wayp",
+			"upda",
+			"2)"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			",",
+			"logging\\.debug\\(\\1)\\\\n",
+			"logging\\.debug\\(\\1)",
+			"' \\1'",
+			"steps",
+			","
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "helper1.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7278,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								286,
+								286
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 33.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 287.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.haskell_sublime_load":
+	{
+		"height": 148.0
+	},
+	"output.rope_python_documentation":
+	{
+		"height": 157.0
+	},
+	"pinned_build_system": "",
+	"project": "gold.sublime-project",
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"~/github/udacity/p5/r1/learn.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 209.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
