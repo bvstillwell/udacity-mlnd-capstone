@@ -21,3 +21,6 @@ __pycache__
 .#*
 .coverage
 *.swp
+*.pickle
+*.mat
+notMNIST*
