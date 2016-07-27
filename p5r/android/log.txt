@@ -1,0 +1,174 @@
+07-23 13:07:19.732 29922-29922/org.tensorflow.demo D/ResourcesManager: creating new AssetManager and set to /data/app/org.tensorflow.demo-1/base.apk
+07-23 13:07:19.832 29922-29922/org.tensorflow.demo V/StubApplication: StubApplication created. Android package is org.tensorflow.demo, real application class is android.app.Application.
+07-23 13:07:19.832 29922-29922/org.tensorflow.demo V/StubApplication: Found external resources at /data/local/tmp/incrementaldeployment/org.tensorflow.demo/resources.ap_
+07-23 13:07:19.842 29922-29922/org.tensorflow.demo V/IncrementalClassLoader: Incremental dex path is /data/local/tmp/incrementaldeployment/org.tensorflow.demo/dex/incremental_classes1.dex
+07-23 13:07:19.842 29922-29922/org.tensorflow.demo V/IncrementalClassLoader: Native lib dir is /data/data/org.tensorflow.demo/lib
+07-23 13:07:19.842 29922-29922/org.tensorflow.demo V/INCREMENTAL: disableContentProviders
+07-23 13:07:19.842 29922-29922/org.tensorflow.demo V/INCREMENTAL: enableContentProviders
+07-23 13:07:19.852 29922-29922/org.tensorflow.demo D/ResourcesManager: creating new AssetManager and set to /data/local/tmp/incrementaldeployment/org.tensorflow.demo/resources.ap_
+07-23 13:07:19.942 29922-29922/org.tensorflow.demo D/Activity: performCreate Call secproduct feature valuefalse
+07-23 13:07:19.942 29922-29922/org.tensorflow.demo D/Activity: performCreate Call debug elastic valuetrue
+07-23 13:07:19.962 29922-29956/org.tensorflow.demo D/OpenGLRenderer: Render dirty regions requested: true
+07-23 13:07:19.992 29922-29956/org.tensorflow.demo I/Adreno-EGL: <qeglDrvAPI_eglInitialize:410>: EGL 1.4 QUALCOMM build:  ()
+                                                                 OpenGL ES Shader Compiler Version: E031.25.03.06
+                                                                 Build Date: 01/24/15 Sat
+                                                                 Local Branch: AF11_RB1_AU15
+                                                                 Remote Branch: 
+                                                                 Local Patches: 
+                                                                 Reconstruct Branch: 
+07-23 13:07:19.992 29922-29956/org.tensorflow.demo I/OpenGLRenderer: Initialized EGL, version 1.4
+07-23 13:07:20.022 29922-29956/org.tensorflow.demo D/OpenGLRenderer: Enabling debug mode 0
+07-23 13:07:20.092 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value emboss
+07-23 13:07:20.092 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value sketch
+07-23 13:07:20.092 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value neon
+07-23 13:07:20.092 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value vintage-warm
+07-23 13:07:20.092 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value vintage-cold
+07-23 13:07:20.092 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value washed
+07-23 13:07:20.092 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value asd
+07-23 13:07:20.092 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value back-light
+07-23 13:07:20.092 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value flowers
+07-23 13:07:20.092 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value AR
+07-23 13:07:20.092 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value text
+07-23 13:07:20.092 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value fall-color
+07-23 13:07:20.092 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value dusk-dawn
+07-23 13:07:20.102 29922-29922/org.tensorflow.demo I/tensorflow: CameraConnectionFragment: Adding size: 1440x1080
+07-23 13:07:20.102 29922-29922/org.tensorflow.demo I/tensorflow: CameraConnectionFragment: Adding size: 1280x720
+07-23 13:07:20.102 29922-29922/org.tensorflow.demo I/tensorflow: CameraConnectionFragment: Adding size: 1056x864
+07-23 13:07:20.102 29922-29922/org.tensorflow.demo I/tensorflow: CameraConnectionFragment: Adding size: 960x720
+07-23 13:07:20.102 29922-29922/org.tensorflow.demo I/tensorflow: CameraConnectionFragment: Adding size: 720x480
+07-23 13:07:20.102 29922-29922/org.tensorflow.demo I/tensorflow: CameraConnectionFragment: Adding size: 640x480
+07-23 13:07:20.102 29922-29922/org.tensorflow.demo I/tensorflow: CameraConnectionFragment: Not adding size: 320x240
+07-23 13:07:20.102 29922-29922/org.tensorflow.demo I/tensorflow: CameraConnectionFragment: Not adding size: 176x144
+07-23 13:07:20.102 29922-29922/org.tensorflow.demo I/tensorflow: CameraConnectionFragment: Chosen size: 640x480
+07-23 13:07:20.112 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value emboss
+07-23 13:07:20.112 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value sketch
+07-23 13:07:20.112 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value neon
+07-23 13:07:20.112 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value vintage-warm
+07-23 13:07:20.112 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value vintage-cold
+07-23 13:07:20.112 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value washed
+07-23 13:07:20.112 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value asd
+07-23 13:07:20.112 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value back-light
+07-23 13:07:20.112 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value flowers
+07-23 13:07:20.112 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value AR
+07-23 13:07:20.112 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value text
+07-23 13:07:20.112 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value fall-color
+07-23 13:07:20.112 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value dusk-dawn
+07-23 13:07:20.122 29922-29922/org.tensorflow.demo I/CameraManager: Using legacy camera HAL.
+07-23 13:07:20.503 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value emboss
+07-23 13:07:20.503 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value sketch
+07-23 13:07:20.503 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value neon
+07-23 13:07:20.503 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value vintage-warm
+07-23 13:07:20.503 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value vintage-cold
+07-23 13:07:20.503 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value washed
+07-23 13:07:20.503 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value asd
+07-23 13:07:20.503 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value back-light
+07-23 13:07:20.503 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value flowers
+07-23 13:07:20.503 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value AR
+07-23 13:07:20.503 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value text
+07-23 13:07:20.503 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value fall-color
+07-23 13:07:20.503 29922-29922/org.tensorflow.demo W/ArrayUtils: Ignoring invalid value dusk-dawn
+07-23 13:07:20.513 29922-29954/org.tensorflow.demo I/tensorflow: CameraConnectionFragment: Opening camera preview: 640x480
+07-23 13:07:20.523 29922-29954/org.tensorflow.demo I/CameraDeviceState: Legacy camera service transitioning to state CONFIGURING
+07-23 13:07:20.523 29922-30000/org.tensorflow.demo I/RequestThread-0: Configure outputs: 2 surfaces configured.
+07-23 13:07:20.523 29922-30000/org.tensorflow.demo D/Camera: app passed NULL surface
+07-23 13:07:20.553 29922-29922/org.tensorflow.demo I/Timeline: Timeline: Activity_idle id: android.os.BinderProxy@2fb4889b time:7719715
+07-23 13:07:20.553 29922-29954/org.tensorflow.demo I/CameraDeviceState: Legacy camera service transitioning to state IDLE
+07-23 13:07:20.553 29922-29954/org.tensorflow.demo I/tensorflow: CameraConnectionFragment: Getting assets.
+07-23 13:07:20.553 29922-29954/org.tensorflow.demo I/native: tensorflow_jni.cc:115 Loading TensorFlow.
+07-23 13:07:20.563 29922-29954/org.tensorflow.demo I/native: tensorflow_jni.cc:117 Making new SessionOptions.
+07-23 13:07:20.563 29922-29954/org.tensorflow.demo I/native: tensorflow_jni.cc:120 Got config, 0 devices
+07-23 13:07:20.563 29922-29954/org.tensorflow.demo I/native: tensorflow_jni.cc:123 Session created.
+07-23 13:07:20.563 29922-29954/org.tensorflow.demo I/native: tensorflow_jni.cc:126 Graph created.
+07-23 13:07:20.563 29922-29954/org.tensorflow.demo I/native: tensorflow_jni.cc:130 Acquired AssetManager.
+07-23 13:07:20.563 29922-29954/org.tensorflow.demo I/native: tensorflow_jni.cc:132 Reading file to proto: file:///android_asset/tensorflow_inception_graph.pb
+07-23 13:07:20.563 29922-29954/org.tensorflow.demo I/native: jni_utils.cc:105 Opening asset tensorflow_inception_graph.pb from disk with zero-copy.
+07-23 13:07:20.993 29922-29954/org.tensorflow.demo I/native: stat_summarizer.cc:33 StatSummarizer found 370 nodes
+07-23 13:07:20.993 29922-29954/org.tensorflow.demo I/native: tensorflow_jni.cc:137 Creating session.
+07-23 13:07:21.033 29922-29954/org.tensorflow.demo I/native: tensorflow_jni.cc:145 TensorFlow graph loaded from: file:///android_asset/tensorflow_inception_graph.pb
+07-23 13:07:21.033 29922-29954/org.tensorflow.demo I/native: jni_utils.cc:145 Opening asset imagenet_comp_graph_label_strings.txt from disk with copy.
+07-23 13:07:21.033 29922-29954/org.tensorflow.demo I/native: jni_utils.cc:165 Read 1001 values from file:///android_asset/imagenet_comp_graph_label_strings.txt
+07-23 13:07:21.033 29922-29954/org.tensorflow.demo I/native: tensorflow_jni.cc:149 1001 label strings loaded from: file:///android_asset/imagenet_comp_graph_label_strings.txt
+07-23 13:07:21.033 29922-29954/org.tensorflow.demo I/native: tensorflow_jni.cc:154 Initialization done in 477ms
+07-23 13:07:21.033 29922-29954/org.tensorflow.demo I/tensorflow: CameraConnectionFragment: TensorFlow initialized.
+07-23 13:07:21.043 29922-29954/org.tensorflow.demo I/RequestQueue: Repeating capture request set.
+07-23 13:07:21.043 29922-30000/org.tensorflow.demo W/LegacyRequestMapper: convertRequestMetadata - control.awbRegions setting is not supported, ignoring value
+07-23 13:07:21.043 29922-30000/org.tensorflow.demo W/LegacyRequestMapper: Only received metering rectangles with weight 0.
+07-23 13:07:21.694 29922-30001/org.tensorflow.demo I/CameraDeviceState: Legacy camera service transitioning to state CAPTURING
+07-23 13:07:21.704 29922-29938/org.tensorflow.demo E/BufferQueueProducer: [unnamed-29922-2] dequeueBuffer: min undequeued buffer count (2) exceeded (dequeued=11 undequeued=0)
+07-23 13:07:21.704 29922-29941/org.tensorflow.demo E/BufferQueueProducer: [unnamed-29922-2] dequeueBuffer: min undequeued buffer count (2) exceeded (dequeued=10 undequeued=1)
+07-23 13:07:21.734 29922-29954/org.tensorflow.demo D/ImageReader_JNI: ImageReader_imageSetup: Overriding buffer format YUV_420_888 to 32315659.
+07-23 13:07:21.734 29922-29954/org.tensorflow.demo I/tensorflow: TensorFlowImageListener: Initializing at size 640x480
+07-23 13:07:21.774 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:361 Image dimensions: 224x224 stride: 896
+07-23 13:07:21.774 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:240 TensorFlow: Copying Data.
+07-23 13:07:21.784 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:258 Start computing.
+07-23 13:07:22.314 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:299 End computing. Ran in 533ms (533ms avg over 1 runs)
+07-23 13:07:22.314 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:307 Reading from layer output:0
+07-23 13:07:22.314 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:334 Predictions: 651 0.33 nematode
+07-23 13:07:22.314 29922-29955/org.tensorflow.demo I/TensorflowClassifier: Parsing [651 0.33 nematode]
+07-23 13:07:22.394 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:361 Image dimensions: 224x224 stride: 896
+07-23 13:07:22.394 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:240 TensorFlow: Copying Data.
+07-23 13:07:22.404 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:258 Start computing.
+07-23 13:07:22.745 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:299 End computing. Ran in 354ms (443ms avg over 2 runs)
+07-23 13:07:22.745 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:307 Reading from layer output:0
+07-23 13:07:22.745 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:334 Predictions: 651 0.331 nematode
+07-23 13:07:22.745 29922-29955/org.tensorflow.demo I/TensorflowClassifier: Parsing [651 0.331 nematode]
+07-23 13:07:22.785 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:361 Image dimensions: 224x224 stride: 896
+07-23 13:07:22.785 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:240 TensorFlow: Copying Data.
+07-23 13:07:22.785 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:258 Start computing.
+07-23 13:07:23.105 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:299 End computing. Ran in 320ms (402ms avg over 3 runs)
+07-23 13:07:23.105 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:307 Reading from layer output:0
+07-23 13:07:23.105 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:334 Predictions: 651 0.331 nematode
+07-23 13:07:23.105 29922-29955/org.tensorflow.demo I/TensorflowClassifier: Parsing [651 0.331 nematode]
+07-23 13:07:23.125 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:361 Image dimensions: 224x224 stride: 896
+07-23 13:07:23.125 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:240 TensorFlow: Copying Data.
+07-23 13:07:23.125 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:258 Start computing.
+07-23 13:07:23.455 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:299 End computing. Ran in 323ms (382ms avg over 4 runs)
+07-23 13:07:23.455 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:307 Reading from layer output:0
+07-23 13:07:23.455 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:334 Predictions: 651 0.329 nematode
+07-23 13:07:23.455 29922-29955/org.tensorflow.demo I/TensorflowClassifier: Parsing [651 0.329 nematode]
+07-23 13:07:23.535 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:361 Image dimensions: 224x224 stride: 896
+07-23 13:07:23.535 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:240 TensorFlow: Copying Data.
+07-23 13:07:23.535 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:258 Start computing.
+07-23 13:07:23.866 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:299 End computing. Ran in 333ms (373ms avg over 5 runs)
+07-23 13:07:23.866 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:307 Reading from layer output:0
+07-23 13:07:23.866 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:334 Predictions: 651 0.329 nematode
+07-23 13:07:23.866 29922-29955/org.tensorflow.demo I/TensorflowClassifier: Parsing [651 0.329 nematode]
+07-23 13:07:23.936 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:361 Image dimensions: 224x224 stride: 896
+07-23 13:07:23.936 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:240 TensorFlow: Copying Data.
+07-23 13:07:23.936 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:258 Start computing.
+07-23 13:07:24.286 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:299 End computing. Ran in 351ms (369ms avg over 6 runs)
+07-23 13:07:24.286 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:307 Reading from layer output:0
+07-23 13:07:24.286 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:334 Predictions: 651 0.329 nematode
+07-23 13:07:24.286 29922-29955/org.tensorflow.demo I/TensorflowClassifier: Parsing [651 0.329 nematode]
+07-23 13:07:24.336 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:361 Image dimensions: 224x224 stride: 896
+07-23 13:07:24.336 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:240 TensorFlow: Copying Data.
+07-23 13:07:24.336 29922-29922/org.tensorflow.demo I/RequestQueue: Repeating capture request cancelled.
+07-23 13:07:24.336 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:258 Start computing.
+07-23 13:07:24.426 29922-29980/org.tensorflow.demo E/BufferQueueProducer: [unnamed-29922-2] queueBuffer: BufferQueue has been abandoned
+07-23 13:07:24.456 29922-29938/org.tensorflow.demo E/BufferQueueProducer: [unnamed-29922-2] dequeueBuffer: BufferQueue has been abandoned
+07-23 13:07:24.627 29922-30000/org.tensorflow.demo E/BufferQueueProducer: [unnamed-29922-2] cancelBuffer: BufferQueue has been abandoned
+07-23 13:07:24.627 29922-30000/org.tensorflow.demo E/BufferQueueProducer: [unnamed-29922-2] cancelBuffer: BufferQueue has been abandoned
+07-23 13:07:24.627 29922-30000/org.tensorflow.demo E/BufferQueueProducer: [unnamed-29922-2] cancelBuffer: BufferQueue has been abandoned
+07-23 13:07:24.627 29922-30000/org.tensorflow.demo E/BufferQueueProducer: [unnamed-29922-2] cancelBuffer: BufferQueue has been abandoned
+07-23 13:07:24.627 29922-30000/org.tensorflow.demo E/BufferQueueProducer: [unnamed-29922-2] cancelBuffer: BufferQueue has been abandoned
+07-23 13:07:24.627 29922-30000/org.tensorflow.demo E/BufferQueueProducer: [unnamed-29922-2] cancelBuffer: BufferQueue has been abandoned
+07-23 13:07:24.627 29922-30000/org.tensorflow.demo E/BufferQueueProducer: [unnamed-29922-2] cancelBuffer: BufferQueue has been abandoned
+07-23 13:07:24.627 29922-30000/org.tensorflow.demo E/BufferQueueProducer: [unnamed-29922-2] cancelBuffer: BufferQueue has been abandoned
+07-23 13:07:24.627 29922-30000/org.tensorflow.demo E/BufferQueueProducer: [unnamed-29922-2] cancelBuffer: BufferQueue has been abandoned
+07-23 13:07:24.647 29922-30000/org.tensorflow.demo E/BufferQueueProducer: [unnamed-29922-2] cancelBuffer: BufferQueue has been abandoned
+07-23 13:07:24.677 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:299 End computing. Ran in 337ms (364ms avg over 7 runs)
+07-23 13:07:24.677 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:307 Reading from layer output:0
+07-23 13:07:24.677 29922-29955/org.tensorflow.demo I/native: tensorflow_jni.cc:334 Predictions: 651 0.329 nematode
+07-23 13:07:24.677 29922-29955/org.tensorflow.demo I/TensorflowClassifier: Parsing [651 0.329 nematode]
+07-23 13:07:25.257 29922-29922/org.tensorflow.demo V/ActivityThread: updateVisibility : ActivityRecord{2eaa37c token=android.os.BinderProxy@2fb4889b {org.tensorflow.demo/org.tensorflow.demo.CameraActivity}} show : false
+07-23 13:07:30.312 29922-29936/org.tensorflow.demo W/MessageQueue: Handler (android.os.Handler) {299f9405} sending message to a Handler on a dead thread
+                                                                   java.lang.IllegalStateException: Handler (android.os.Handler) {299f9405} sending message to a Handler on a dead thread
+                                                                       at android.os.MessageQueue.enqueueMessage(MessageQueue.java:325)
+                                                                       at android.os.Handler.enqueueMessage(Handler.java:631)
+                                                                       at android.os.Handler.sendMessageAtFrontOfQueue(Handler.java:623)
+                                                                       at android.hardware.camera2.legacy.RequestThreadManager.quit(RequestThreadManager.java:941)
+                                                                       at android.hardware.camera2.legacy.LegacyCameraDevice.close(LegacyCameraDevice.java:444)
+                                                                       at android.hardware.camera2.legacy.LegacyCameraDevice.finalize(LegacyCameraDevice.java:468)
+                                                                       at java.lang.Daemons$FinalizerDaemon.doFinalize(Daemons.java:190)
+                                                                       at java.lang.Daemons$FinalizerDaemon.run(Daemons.java:173)
+                                                                       at java.lang.Thread.run(Thread.java:818)
