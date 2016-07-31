@@ -297,54 +297,66 @@ static std::string ClassifyImage(const RGBA* const bitmap_src) {
   }
   const int64 elapsed_time_inf = end_time - start_time;
   g_timing_total_us += elapsed_time_inf;
-  VLOG(0) << "End computing. Ran in " << elapsed_time_inf / 1000 << "ms ("
-          << (g_timing_total_us / g_num_runs / 1000) << "ms avg over "
-          << g_num_runs << " runs)";
+  //BS VLOG(0) << "End computing. Ran in " << elapsed_time_inf / 1000 << "ms ("
+  //         << (g_timing_total_us / g_num_runs / 1000) << "ms avg over "
+  //         << g_num_runs << " runs)";
 
   if (!s.ok()) {
     LOG(FATAL) << "Error during inference: " << s;
   }
 
-  VLOG(0) << "Reading from layer " << output_names[0];
+  //BS VLOG(0) << "Reading from layer " << output_names[0];
   tensorflow::Tensor* output = &output_tensors[0];
   const int kNumResults = 1;
   const float kThreshold = 0.1f;
+  std::vector<std::pair<float, int> > top_results;
+  //GetTopN(output->flat<float>(), kNumResults, kThreshold, 0, 11, &top_results);
+
+  const Eigen::TensorMap<Eigen::Tensor<float, 1, Eigen::RowMajor>, Eigen::Aligned>& prediction = output->flat<float>();
+  const int max_digits = 5;
+
+  int max[max_digits];
+  float confidence[max_digits];
+
+  for (int digit = 0; digit < max_digits; ++digit){ 
+    max[digit] = 0;
+    confidence[digit] = 0.0;
+
+    for (int i = 0; i < 11; ++i){
+      float value = prediction(digit * 11 + i);
+      //LOG(INFO) << value << ',' << confidence[digit];
+      if (value > confidence[digit]){
+        //LOG(INFO) << max[digit] << ',' << i << ',' << value;
+        max[digit] = i;
+        confidence[digit] = value;
+      }
+    }
+  }
 
   std::stringstream ss;
-  ss.precision(3);  
+  ss.precision(3);
+  //ss << "Pred ";
 
-  for (int i = 0; i < 55; i+=11)
+  float sum = 0.0;
+
+  for (int digit = 0; digit < max_digits; ++digit)
   {
-    std::vector<std::pair<float, int> > top_results;
-    GetTopN(output->flat<float>(), kNumResults, kThreshold, i, i+11, &top_results);
 
-    const auto& result = top_results[0];
+    sum += confidence[digit];
 
-    if (result.second < 10.0)
-      ss << result.second;
-    else
-      ss << '.';
+    if (max[digit]<10){
+      ss << max[digit];
+    }else{
+      ss << 'x';
+    }
   }
-  
 
-  // std::stringstream ss;
-  // ss.precision(3);
-  // for (const auto& result : top_results) {
-  //   const float confidence = result.first;
-  //   const int index = result.second;
+  sum = sum / max_digits;
+  ss.precision(3);
+  ss << ' ' << sum;
+  ss << " title";
 
-  //   ss << index << " " << confidence << " ";
-
-  //   // Write out the result as a string
-  //   if (index < g_label_strings.size()) {
-  //     ss << "Prediction: " << index;
-  //   }
-
-  //   ss << "\n";
-  // }
-  ss << "\n";
-
-  LOG(INFO) << "Predictions: " << ss.str();
+  LOG(INFO) << ss.str();
   return ss.str();
 }
 
