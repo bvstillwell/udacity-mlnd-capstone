@@ -1,5 +1,6 @@
 from __future__ import print_function
 import numpy as np
+import os
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import time
@@ -168,8 +169,32 @@ def create_graph(num_digits,
                                           i], name="valid_prediction_%d" % i) for i in range(num_digits)]
 
         tf_test_dataset = tf.constant(test_dataset, name="tf_test_dataset")
-        test_prediction = [tf.nn.softmax(model(tf_test_dataset)[
-                                         i], name="test_prediction_%d" % i) for i in range(num_digits)]
+        test_prediction = [
+            tf.nn.softmax(
+                model(tf_test_dataset)[i],
+                name="test_prediction_%d" % i)
+            for i in range(num_digits)]
+
+        tf_predict_single_dataset = tf.placeholder(
+            tf.float32,
+            shape=(1, img_height, img_width, 3),
+            name='tf_predict_single_dataset')
+
+        # Average the color
+        conv = tf.reduce_mean(tf_predict_single_dataset, 3)
+        # Shape it correctly
+        conv = tf.reshape(conv, conv.get_shape().as_list() + [1])
+        # Move the color range
+        conv = tf.add(tf.div(conv, 255), -0.5)
+
+        predict_single_output = tf.squeeze(
+            tf.concat(1,
+                      [tf.nn.softmax(model(conv)[i],
+                                     name="test_prediction_%d" % i)
+                       for i in range(num_digits)]
+                      ),
+            name='predict_single_output')
+
     return graph
 
 
@@ -179,7 +204,8 @@ def run_graph(graph,
               train_labels,
               valid_labels,
               test_labels,
-              mins=1):
+              mins=1,
+              save_model=False):
     start_time = time.time()
 
     batch_size = 16
@@ -259,5 +285,12 @@ def run_graph(graph,
 
             if timeup:
                 break
+
+        if save_model:
+            print("Saving graph")
+            saver = tf.train.Saver()
+            checkpoint_path = os.path.join('save', 'model.ckpt')
+            saver.save(session, checkpoint_path, global_step=0)
+            tf.train.write_graph(session.graph.as_graph_def(), 'save', 'model.pb')
 
     print("Finished")

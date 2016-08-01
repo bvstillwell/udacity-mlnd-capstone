@@ -50,7 +50,7 @@ public class TensorFlowImageListener implements OnImageAvailableListener {
   // the ones you produced.
   private static final int NUM_CLASSES = 55;
   private static final int INPUT_SIZE = 28;
-  private static final int IMAGE_MEAN = 117;
+  private static final int IMAGE_MEAN = 0;
   private static final float IMAGE_STD = 1;
   private static final String INPUT_NAME = "tf_predict_single_dataset:0";
   private static final String OUTPUT_NAME = "predict_single_output:0";
