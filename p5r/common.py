@@ -5,6 +5,11 @@ import matplotlib.pyplot as plt
 import time
 
 
+def max_digits(dataset, labels, max_digits):
+    keep = [i for i, label in enumerate(labels) if len(label) <= max_digits]
+    return dataset[keep], labels[keep]
+
+
 def show_image(img, label):
     print("Labels", label)
     print("Dtype", img.dtype)
@@ -173,7 +178,8 @@ def run_graph(graph,
               train_dataset,
               train_labels,
               valid_labels,
-              test_labels):
+              test_labels,
+              mins=1):
     start_time = time.time()
 
     batch_size = 16
@@ -182,7 +188,7 @@ def run_graph(graph,
     save_steps = 100000
     eval_steps = 500
     valid_steps = 500
-    timeout = 2 * 60  # 30 minutes * 60 seconds
+    timeout = mins * 60  # 30 minutes * 60 seconds
 
     tf_train_dataset = graph.get_tensor_by_name('tf_train_dataset:0')
     tf_train_labels = [graph.get_tensor_by_name(
@@ -254,10 +260,4 @@ def run_graph(graph,
             if timeup:
                 break
 
-        print("Creating outputs")
-    #     output = {
-    #         'layer_1' : layer1_weights.eval(),
-    #         'layer_2' : layer2_weights.eval(),
-    #         'layer_3' : layer3_weights.eval(),
-    #     }
     print("Finished")
