@@ -313,7 +313,7 @@ static std::string ClassifyImage(const RGBA* const bitmap_src) {
   //GetTopN(output->flat<float>(), kNumResults, kThreshold, 0, 11, &top_results);
 
   const Eigen::TensorMap<Eigen::Tensor<float, 1, Eigen::RowMajor>, Eigen::Aligned>& prediction = output->flat<float>();
-  const int max_digits = 5;
+  const int max_digits = 3;
 
   int max[max_digits];
   float confidence[max_digits];
@@ -333,28 +333,33 @@ static std::string ClassifyImage(const RGBA* const bitmap_src) {
     }
   }
 
-  std::stringstream ss;
-  ss.precision(3);
+  
   //ss << "Pred ";
 
-  float sum = 0.0;
+  std::stringstream ss2;
 
+  float sum = 0.0;
   for (int digit = 0; digit < max_digits; ++digit)
   {
-
     sum += confidence[digit];
 
-    if (max[digit]<10){
-      ss << max[digit];
-    }else{
-      ss << 'x';
-    }
+    if (confidence[digit] < 0.7)
+      ss2 << '.'; //Low confidence on this digit
+    else if (max[digit]<10)
+      ss2 << max[digit];
+    else
+      ss2 << 'x';
   }
 
-  sum = sum / max_digits;
+  float mean = sum / max_digits;
+  if (mean < 0.0001)
+    mean = 0;
+
+  std::stringstream ss;
+  ss << "Bam ";
   ss.precision(3);
-  ss << ' ' << sum;
-  ss << " title";
+  ss << mean;
+  ss << " " << ss2.str();
 
   LOG(INFO) << ss.str();
   return ss.str();

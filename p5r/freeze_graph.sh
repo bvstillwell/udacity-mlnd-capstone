@@ -4,4 +4,4 @@
 	--output_graph=save/frozen_graph.pb \
 	--output_node_names=predict_single_output
 
-cp save/model.pb android/assets/
+cp save/frozen_graph.pb android/assets/

@@ -53,7 +53,8 @@ def accuracy_list(num_digits, predictions, labels):
 # different inputs
 
 
-def create_graph(num_digits,
+def create_graph(batch_size,
+                 num_digits,
                  num_labels,
                  valid_dataset,
                  test_dataset,
@@ -63,15 +64,9 @@ def create_graph(num_digits,
                  use_max_pool=False,
                  num_hidden=64,
                  depth1=16,
+                 depth2=0,
                  patch_size=5):
-    batch_size = 16
     num_channels = 1
-
-    patch_size = patch_size
-    depth = depth1
-
-    # Taken from tensorflow tutorial
-    num_hidden = num_hidden
 
     graph = tf.Graph()
     stddev = 0.1
@@ -84,32 +79,60 @@ def create_graph(num_digits,
         tf_train_dataset = tf.placeholder(tf.float32, shape=(batch_size,
                                                              img_height,
                                                              img_width,
-                                                             num_channels), name="tf_train_dataset")
+                                                             num_channels),
+                                          name="tf_train_dataset")
 
         tf_train_labels = [tf.placeholder(tf.float32, shape=(batch_size,
-                                                             num_labels), name="tf_train_labels_%d" % i)
+                                                             num_labels),
+                                          name="tf_train_labels_%d" % i)
                            for i in range(num_digits)]
 
         # Variables.
         layer1_weights = tf.Variable(tf.truncated_normal([patch_size,
                                                           patch_size,
                                                           num_channels,
-                                                          depth], stddev=stddev), name="layer1_weights")
+                                                          depth1],
+                                                         stddev=stddev),
+                                     name="layer1_weights")
         layer1_biases = tf.Variable(tf.constant(
-            0.1, shape=[depth]), name="layer1_biases")
+            0.1, shape=[depth1]), name="layer1_biases")
 
-        tmp_size = img_width * img_height * depth
+        cnn_weights = layer1_weights
+        cnn_biases = layer1_biases
+        connected_size = img_width * img_height * depth1
         if use_max_pool:
-            tmp_size = int(tmp_size / 4.)
-        layer2_weights = tf.Variable(tf.truncated_normal([tmp_size, num_hidden], stddev=stddev),
-                                     name="layer2_weights")
-        layer2_biases = tf.Variable(tf.constant(
-            0.1, shape=[num_hidden]), name="layer2_biases")
+            connected_size = int(connected_size / 4.)
 
-        layer4_weights = tf.Variable(tf.truncated_normal([num_hidden,
-                                                          num_labels * num_digits], stddev=stddev), name="layer4_weights")
-        layer4_biases = tf.Variable(
-            tf.ones(shape=[num_labels * num_digits]), name="layer4_biases")
+        if depth2 > 0:
+            layer2_weights = tf.Variable(tf.truncated_normal([patch_size,
+                                                              patch_size,
+                                                              depth1,
+                                                              depth2],
+                                                             stddev=stddev),
+                                         name="layer2_weights")
+            layer2_biases = tf.Variable(
+                tf.constant(0.1, shape=[depth2]),
+                name="layer2_biases")
+
+            if use_max_pool:
+                connected_size = int(connected_size / 4.)
+
+            cnn_weights = layer2_weights
+            cnn_biases = layer2_biases
+
+        connected_weights = tf.Variable(
+            tf.truncated_normal([connected_size, num_hidden],
+                                stddev=stddev),
+            name="connected_weights")
+        connected_biases = tf.Variable(tf.constant(
+            0.1, shape=[num_hidden]), name="connected_biases")
+
+        output_weights = tf.Variable(
+            tf.truncated_normal([num_hidden, num_labels * num_digits],
+                                stddev=stddev),
+            name="output_weights")
+        output_biases = tf.Variable(
+            tf.ones(shape=[num_labels * num_digits]), name="output_biases")
 
         # Model.
         def model(data, dropout=False):
@@ -119,20 +142,34 @@ def create_graph(num_digits,
             conv = tf.nn.relu(tf.nn.conv2d(data, layer1_weights, [
                               1, 1, 1, 1], padding='SAME') + layer1_biases)
             if use_max_pool:
-                conv = tf.nn.max_pool(conv, ksize=[1, 2, 2, 1], strides=[
-                                      1, 2, 2, 1], padding='SAME')
+                conv = tf.nn.max_pool(conv,
+                                      ksize=[1, 2, 2, 1],
+                                      strides=[1, 2, 2, 1],
+                                      padding='SAME')
             if dropout:
                 conv = tf.nn.dropout(conv, 0.75)
+
+            # Second layer of cnn
+            if depth2 > 0:
+                conv = tf.nn.relu(tf.nn.conv2d(conv, layer2_weights, [
+                                  1, 1, 1, 1], padding='SAME') + layer2_biases)
+                if use_max_pool:
+                    conv = tf.nn.max_pool(conv,
+                                          ksize=[1, 2, 2, 1],
+                                          strides=[1, 2, 2, 1],
+                                          padding='SAME')
+                if dropout:
+                    conv = tf.nn.dropout(conv, 0.75)
 
             shape = conv.get_shape().as_list()
             reshape = tf.reshape(
                 conv, [shape[0], shape[1] * shape[2] * shape[3]])
             hidden = tf.nn.relu(
-                tf.matmul(reshape, layer2_weights) + layer2_biases)
+                tf.matmul(reshape, connected_weights) + connected_biases)
             if dropout:
                 hidden = tf.nn.dropout(hidden, 0.5)
 
-            output = tf.matmul(hidden, layer4_weights) + layer4_biases
+            output = tf.matmul(hidden, output_weights) + output_biases
 
             split_logits = tf.split(1, num_digits, output)
             return split_logits
@@ -199,6 +236,7 @@ def create_graph(num_digits,
 
 
 def run_graph(graph,
+              batch_size,
               num_digits,
               train_dataset,
               train_labels,
@@ -208,13 +246,13 @@ def run_graph(graph,
               save_model=False):
     start_time = time.time()
 
-    batch_size = 16
-
     num_steps = 1000001
     save_steps = 100000
     eval_steps = 500
     valid_steps = 500
     timeout = mins * 60  # 30 minutes * 60 seconds
+    print("Batch_size:%d" % batch_size)
+    print("Mins:%d" % mins)
 
     tf_train_dataset = graph.get_tensor_by_name('tf_train_dataset:0')
     tf_train_labels = [graph.get_tensor_by_name(
