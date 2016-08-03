@@ -63,8 +63,7 @@ def create_graph(batch_size,
                  learning_decay=0.596,
                  use_max_pool=False,
                  num_hidden=64,
-                 depth1=16,
-                 depth2=0,
+                 layers=[16],
                  patch_size=5):
     num_channels = 1
 
@@ -88,84 +87,60 @@ def create_graph(batch_size,
                            for i in range(num_digits)]
 
         # Variables.
-        layer1_weights = tf.Variable(tf.truncated_normal([patch_size,
-                                                          patch_size,
-                                                          num_channels,
-                                                          depth1],
-                                                         stddev=stddev),
-                                     name="layer1_weights")
-        layer1_biases = tf.Variable(tf.constant(
-            0.1, shape=[depth1]), name="layer1_biases")
+        weights = []
+        biases = []
+        layers.insert(0, 1)
+        # weight will look like [1, 8, 16, 32]
+        # or [1, 8]
 
-        cnn_weights = layer1_weights
-        cnn_biases = layer1_biases
-        connected_size = img_width * img_height * depth1
-        if use_max_pool:
-            connected_size = int(connected_size / 4.)
+        # We need to calculate our connected size
+        pic_dim = img_width
+        for i in range(len(layers) - 1):
+            weights.append(tf.Variable(tf.truncated_normal([patch_size,
+                                                            patch_size,
+                                                            layers[i],
+                                                            layers[i + 1]],
+                                                           stddev=stddev),
+                                       name="layer%d_weights" % i))
 
-        if depth2 > 0:
-            layer2_weights = tf.Variable(tf.truncated_normal([patch_size,
-                                                              patch_size,
-                                                              depth1,
-                                                              depth2],
-                                                             stddev=stddev),
-                                         name="layer2_weights")
-            layer2_biases = tf.Variable(
-                tf.constant(0.1, shape=[depth2]),
-                name="layer2_biases")
-
+            biases.append(tf.Variable(tf.constant(0.1, shape=[layers[i + 1]]), name="layer%d_biases" % i))
             if use_max_pool:
-                connected_size = int(connected_size / 4.)
+                # Our pic size decreased when we use max_pooling
+                pic_dim = int(round(pic_dim / 2))
+                # Minimum pic size
+                if pic_dim < 4:
+                  pic_dim = 4
 
-            cnn_weights = layer2_weights
-            cnn_biases = layer2_biases
+        # The number of weights for the fully connected layer
+        connected_size = pic_dim * pic_dim * layers[-1]
+        connected_weights = tf.Variable(tf.truncated_normal([connected_size, num_hidden], stddev=stddev), name="connected_weights")
+        connected_biases = tf.Variable(tf.constant(0.1, shape=[num_hidden]), name="connected_biases")
 
-        connected_weights = tf.Variable(
-            tf.truncated_normal([connected_size, num_hidden],
-                                stddev=stddev),
-            name="connected_weights")
-        connected_biases = tf.Variable(tf.constant(
-            0.1, shape=[num_hidden]), name="connected_biases")
-
-        output_weights = tf.Variable(
-            tf.truncated_normal([num_hidden, num_labels * num_digits],
-                                stddev=stddev),
-            name="output_weights")
-        output_biases = tf.Variable(
-            tf.ones(shape=[num_labels * num_digits]), name="output_biases")
+        # Output layer, multiple classifiers
+        output_weights = tf.Variable(tf.truncated_normal([num_hidden, num_labels * num_digits], stddev=stddev),name="output_weights")
+        output_biases = tf.Variable(tf.ones(shape=[num_labels * num_digits]), name="output_biases")
 
         # Model.
         def model(data, dropout=False):
             if dropout:
                 data = tf.nn.dropout(data, 0.9)
 
-            conv = tf.nn.relu(tf.nn.conv2d(data, layer1_weights, [
-                              1, 1, 1, 1], padding='SAME') + layer1_biases)
-            if use_max_pool:
-                conv = tf.nn.max_pool(conv,
-                                      ksize=[1, 2, 2, 1],
-                                      strides=[1, 2, 2, 1],
-                                      padding='SAME')
-            if dropout:
-                conv = tf.nn.dropout(conv, 0.75)
-
-            # Second layer of cnn
-            if depth2 > 0:
-                conv = tf.nn.relu(tf.nn.conv2d(conv, layer2_weights, [
-                                  1, 1, 1, 1], padding='SAME') + layer2_biases)
+            for i in range(len(layers) - 1):
+                data = tf.nn.relu(tf.nn.conv2d(data,
+                                               weights[i],
+                                               [1, 1, 1, 1],
+                                               padding='SAME') + biases[i])
                 if use_max_pool:
-                    conv = tf.nn.max_pool(conv,
+                    data = tf.nn.max_pool(data,
                                           ksize=[1, 2, 2, 1],
                                           strides=[1, 2, 2, 1],
                                           padding='SAME')
                 if dropout:
-                    conv = tf.nn.dropout(conv, 0.75)
+                    data = tf.nn.dropout(data, 0.75)
 
-            shape = conv.get_shape().as_list()
-            reshape = tf.reshape(
-                conv, [shape[0], shape[1] * shape[2] * shape[3]])
-            hidden = tf.nn.relu(
-                tf.matmul(reshape, connected_weights) + connected_biases)
+            shape = data.get_shape().as_list()
+            reshape = tf.reshape(data, [shape[0], shape[1] * shape[2] * shape[3]])
+            hidden = tf.nn.relu(tf.matmul(reshape, connected_weights) + connected_biases)
             if dropout:
                 hidden = tf.nn.dropout(hidden, 0.5)
 
@@ -180,11 +155,17 @@ def create_graph(batch_size,
         # Training computation.
         logits = model(tf_train_dataset)
 
-        loss = tf.reduce_mean([
+        # loss = tf.reduce_mean([
+        #     tf.nn.softmax_cross_entropy_with_logits(
+        #         logits[i],
+        #         tf_train_labels[i]
+        #     )for i in range(num_digits)], name='loss')
+
+        loss = tf.add_n([tf.reduce_mean(
             tf.nn.softmax_cross_entropy_with_logits(
                 logits[i],
                 tf_train_labels[i]
-            )for i in range(num_digits)], name='loss')
+            ))for i in range(num_digits)], name='loss')
 
         # Optimizer.
         global_step = tf.Variable(0)  # count the number of steps taken.
@@ -193,24 +174,16 @@ def create_graph(batch_size,
                                                    100000,
                                                    learning_decay,
                                                    name='learning_rate')
-        optimizer = tf.train.GradientDescentOptimizer(learning_rate,
+        # optimizer = tf.train.GradientDescentOptimizer(learning_rate,
+        #                                               name='optimizer').minimize(loss,
+        #                                                                          global_step=global_step)
+        optimizer = tf.train.AdagradOptimizer(learning_rate,
                                                       name='optimizer').minimize(loss,
                                                                                  global_step=global_step)
 
         # Predictions for the training, validation, and test data.
         train_prediction = [tf.nn.softmax(model(tf_train_dataset)[
                                           i], name="train_prediction_%d" % i) for i in range(num_digits)]
-
-        tf_valid_dataset = tf.constant(valid_dataset, name="tf_valid_dataset")
-        valid_prediction = [tf.nn.softmax(model(tf_valid_dataset)[
-                                          i], name="valid_prediction_%d" % i) for i in range(num_digits)]
-
-        tf_test_dataset = tf.constant(test_dataset, name="tf_test_dataset")
-        test_prediction = [
-            tf.nn.softmax(
-                model(tf_test_dataset)[i],
-                name="test_prediction_%d" % i)
-            for i in range(num_digits)]
 
         tf_predict_single_dataset = tf.placeholder(
             tf.float32,
@@ -235,34 +208,72 @@ def create_graph(batch_size,
     return graph
 
 
+def run_model(graph, session, num_digits, batch_data, batch_labels, fetches):
+    """Execute ops listed in feteches with a batch of training data"""
+    tf_train_dataset = graph.get_tensor_by_name('tf_train_dataset:0')
+    tf_train_labels = [graph.get_tensor_by_name('tf_train_labels_%d:0' % i) for i in range(num_digits)]
+
+    feed_dict = {tf_train_labels[i]: batch_labels[:, i, :] for i in range(num_digits)}
+    feed_dict[tf_train_dataset] = batch_data
+
+    results = session.run(fetches, feed_dict=feed_dict)
+    return results
+
+
+def run_and_score(graph, session, batch_size, num_digits, dataset, labels):
+    """Due to memory constraints, we need to test our items in batches"""
+    train_prediction = [graph.get_tensor_by_name('train_prediction_%d:0' % i) for i in range(num_digits)]
+
+    # Calculate test accuracy using batches
+    offset = 0
+    accuracy_results = []
+    while offset <= labels.shape[0] - batch_size:
+        batch_data = dataset[offset:(offset + batch_size), :, :, :]
+        batch_labels = labels[offset:(offset + batch_size), :]
+
+        results = run_model(
+            graph,
+            session,
+            num_digits,
+            batch_data,
+            batch_labels,
+            train_prediction)
+
+        accuracy = accuracy_list(
+            num_digits,
+            results,
+            batch_labels)
+
+        accuracy_results.append(accuracy)
+        offset += batch_size
+
+    # return the average of the tests
+    return np.mean(accuracy_results)
+
+
 def run_graph(graph,
               batch_size,
               num_digits,
               train_dataset,
               train_labels,
+              valid_dataset,
               valid_labels,
+              test_dataset,
               test_labels,
               mins=1,
               save_model=False):
     start_time = time.time()
 
-    num_steps = 1000001
-    save_steps = 100000
-    eval_steps = 500
-    valid_steps = 500
+    max_steps = 1000001
+    eval_step = 100
+    valid_step = 100
     timeout = mins * 60  # 30 minutes * 60 seconds
     print("Batch_size:%d" % batch_size)
     print("Mins:%d" % mins)
 
     tf_train_dataset = graph.get_tensor_by_name('tf_train_dataset:0')
-    tf_train_labels = [graph.get_tensor_by_name(
-        'tf_train_labels_%d:0' % i) for i in range(num_digits)]
-    train_prediction = [graph.get_tensor_by_name(
-        'train_prediction_%d:0' % i) for i in range(num_digits)]
-    valid_prediction = [graph.get_tensor_by_name(
-        'valid_prediction_%d:0' % i) for i in range(num_digits)]
-    test_prediction = [graph.get_tensor_by_name(
-        'test_prediction_%d:0' % i) for i in range(num_digits)]
+    tf_train_labels = [graph.get_tensor_by_name('tf_train_labels_%d:0' % i) for i in range(num_digits)]
+
     optimizer = graph.get_tensor_by_name('optimizer:0')
     loss = graph.get_tensor_by_name('loss:0')
     learning_rate = graph.get_tensor_by_name('learning_rate:0')
@@ -271,24 +282,32 @@ def run_graph(graph,
         tf.initialize_all_variables().run()
 
         print('Initialized')
-        for step in range(num_steps):
+        for step in range(max_steps):
             offset = (step * batch_size) % (train_labels.shape[0] - batch_size)
 
             batch_data = train_dataset[offset:(offset + batch_size), :, :, :]
             batch_labels = train_labels[offset:(offset + batch_size), :]
 
-            feed_dict = {tf_train_labels[i]: batch_labels[
-                :, i, :] for i in range(num_digits)}
-            feed_dict[tf_train_dataset] = batch_data
+            results = run_model(
+                graph,
+                session,
+                num_digits,
+                batch_data,
+                batch_labels,
+                [optimizer, loss])
 
-            fetches = [optimizer, loss]
-            results = session.run(fetches, feed_dict=feed_dict)
+            # feed_dict = {tf_train_labels[i]: batch_labels[
+            #     :, i, :] for i in range(num_digits)}
+            # feed_dict[tf_train_dataset] = batch_data
+
+            # fetches = [optimizer, loss]
+            # results = session.run(fetches, feed_dict=feed_dict)
 
             elapsed_time = time.time() - start_time
             timeup = elapsed_time >= timeout
 
             if step > 0 or timeup:
-                if (step % eval_steps == 0 or timeup):
+                if (step % eval_step == 0 or timeup):
                     print('Elapsed time(s):%d/%d (%.2f%%)' %
                           (elapsed_time, timeout, 1.0 * elapsed_time / timeout))
                     if timeup:
@@ -296,33 +315,41 @@ def run_graph(graph,
                     print('Learning rate:', learning_rate.eval())
                     print('Minibatch loss at step %d: %f' % (step, results[1]))
 
-                    fetches = train_prediction
-                    results = session.run(fetches, feed_dict={
-                                          tf_train_dataset: batch_data})
-                    train_accuracy = accuracy_list(
+                    # Score training dataset
+                    train_accuracy = run_and_score(
+                        graph,
+                        session,
+                        batch_size,
                         num_digits,
-                        results,
+                        batch_data,
                         batch_labels)
 
                     print('Minibatch accuracy: %.1f%%' % train_accuracy)
 
-                if (step % valid_steps == 0 or timeup):
-                    valid_accuracy = accuracy_list(
+                if (step % valid_step == 0 or timeup):
+                    # Score valid dataset
+                    valid_accuracy = run_and_score(
+                        graph,
+                        session,
+                        batch_size,
                         num_digits,
-                        [valid_prediction[i].eval()
-                         for i in range(num_digits)],
+                        valid_dataset,
                         valid_labels)
+
                     print('Validation accuracy: %.1f%%' % valid_accuracy)
 
-                if step % save_steps == 0 or timeup:
-                    test_accuracy = accuracy_list(
-                        num_digits,
-                        [test_prediction[i].eval() for i in range(num_digits)],
-                        test_labels)
-                    print('Test accuracy: %.1f%%' % test_accuracy)
+                if timeup:
+                    break
 
-            if timeup:
-                break
+        # Score against test dataset
+        test_accuracy = run_and_score(
+            graph,
+            session,
+            batch_size,
+            num_digits,
+            test_dataset,
+            test_labels)
+        print('Test accuracy: %.1f%%' % test_accuracy)
 
         if save_model:
             print("Saving graph")
