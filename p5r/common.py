@@ -4,6 +4,17 @@ import os
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import time
+import sys
+import datetime
+
+
+def redirect_print_to_file():
+    old_stdout = sys.stdout
+    log_file = open("message.log", "w")
+    sys.stdout = log_file
+    print("this will be written to message.log")
+    # sys.stdout = old_stdout
+    # log_file.close()
 
 
 def max_digits(dataset, labels, max_digits):
@@ -259,8 +270,9 @@ def run_graph(
         mins=1,
         save_model=False,
         batch_size=16,
-        eval_step = 100,
-        valid_step = 100):
+        eval_step=100,
+        valid_step=100,
+        dry_run=False):
 
     start_time = time.time()
 
@@ -282,84 +294,88 @@ def run_graph(
     loss = graph.get_tensor_by_name('loss:0')
     learning_rate = graph.get_tensor_by_name('learning_rate:0')
 
-    with tf.Session(graph=graph) as session:
-        tf.initialize_all_variables().run()
+    if dry_run:
+        print('Dry run only')
+    else:
+        with tf.Session(graph=graph) as session:
+            tf.initialize_all_variables().run()
 
-        print('Initialized')
-        for step in range(max_steps):
-            offset = (step * batch_size) % (train_labels.shape[0] - batch_size)
+            print('Initialized')
+            for step in range(max_steps):
+                offset = (step * batch_size) % (train_labels.shape[0] - batch_size)
 
-            batch_data = train_dataset[offset:(offset + batch_size), :, :, :]
-            batch_labels = train_labels[offset:(offset + batch_size), :]
+                batch_data = train_dataset[offset:(offset + batch_size), :, :, :]
+                batch_labels = train_labels[offset:(offset + batch_size), :]
 
-            results = run_model(
+                results = run_model(
+                    graph,
+                    session,
+                    num_digits,
+                    batch_data,
+                    batch_labels,
+                    [optimizer, loss])
+
+                # feed_dict = {tf_train_labels[i]: batch_labels[
+                #     :, i, :] for i in range(num_digits)}
+                # feed_dict[tf_train_dataset] = batch_data
+
+                # fetches = [optimizer, loss]
+                # results = session.run(fetches, feed_dict=feed_dict)
+
+                elapsed_time = time.time() - start_time
+                timeup = elapsed_time >= timeout
+
+                if step > 0 or timeup:
+                    if (step % eval_step == 0 or timeup):
+                        print('Elapsed time(s):%d/%d (%.2f%%)' %
+                              (elapsed_time, timeout, 1.0 * elapsed_time / timeout))
+                        if timeup:
+                            print("\nTIMEUP!")
+                        print('Learning rate:', learning_rate.eval())
+                        print('Minibatch loss at step %d: %f' % (step, results[1]))
+
+                        # Score training dataset
+                        train_accuracy = run_and_score(
+                            graph,
+                            session,
+                            batch_size,
+                            num_digits,
+                            batch_data,
+                            batch_labels)
+
+                        print('Minibatch accuracy: %.1f%%' % train_accuracy)
+
+                    if (step % valid_step == 0 or timeup):
+                        # Score valid dataset
+                        valid_accuracy = run_and_score(
+                            graph,
+                            session,
+                            batch_size,
+                            num_digits,
+                            valid_dataset,
+                            valid_labels)
+
+                        print('Validation accuracy: %.1f%%' % valid_accuracy)
+
+                    if timeup:
+                        break
+
+            # Score against test dataset
+            test_accuracy = run_and_score(
                 graph,
                 session,
+                batch_size,
                 num_digits,
-                batch_data,
-                batch_labels,
-                [optimizer, loss])
+                test_dataset,
+                test_labels)
+            print('Test accuracy: %.1f%%' % test_accuracy)
 
-            # feed_dict = {tf_train_labels[i]: batch_labels[
-            #     :, i, :] for i in range(num_digits)}
-            # feed_dict[tf_train_dataset] = batch_data
+            if save_model:
+                filename = datetime.datetime.now().strftime('%y-%m-%d-%H-%M-%S')
+                print("Saving graph:%s" % filename)
+                saver = tf.train.Saver()
+                checkpoint_path = os.path.join('save', filename + '.ckpt')
+                saver.save(session, checkpoint_path, global_step=0)
+                tf.train.write_graph(session.graph.as_graph_def(), 'save', filename + '.pb')
 
-            # fetches = [optimizer, loss]
-            # results = session.run(fetches, feed_dict=feed_dict)
-
-            elapsed_time = time.time() - start_time
-            timeup = elapsed_time >= timeout
-
-            if step > 0 or timeup:
-                if (step % eval_step == 0 or timeup):
-                    print('Elapsed time(s):%d/%d (%.2f%%)' %
-                          (elapsed_time, timeout, 1.0 * elapsed_time / timeout))
-                    if timeup:
-                        print("\nTIMEUP!")
-                    print('Learning rate:', learning_rate.eval())
-                    print('Minibatch loss at step %d: %f' % (step, results[1]))
-
-                    # Score training dataset
-                    train_accuracy = run_and_score(
-                        graph,
-                        session,
-                        batch_size,
-                        num_digits,
-                        batch_data,
-                        batch_labels)
-
-                    print('Minibatch accuracy: %.1f%%' % train_accuracy)
-
-                if (step % valid_step == 0 or timeup):
-                    # Score valid dataset
-                    valid_accuracy = run_and_score(
-                        graph,
-                        session,
-                        batch_size,
-                        num_digits,
-                        valid_dataset,
-                        valid_labels)
-
-                    print('Validation accuracy: %.1f%%' % valid_accuracy)
-
-                if timeup:
-                    break
-
-        # Score against test dataset
-        test_accuracy = run_and_score(
-            graph,
-            session,
-            batch_size,
-            num_digits,
-            test_dataset,
-            test_labels)
-        print('Test accuracy: %.1f%%' % test_accuracy)
-
-        if save_model:
-            print("Saving graph")
-            saver = tf.train.Saver()
-            checkpoint_path = os.path.join('save', 'model.ckpt')
-            saver.save(session, checkpoint_path, global_step=0)
-            tf.train.write_graph(session.graph.as_graph_def(), 'save', 'model.pb')
-
-    print("Finished")
+    print("Finished\n")
