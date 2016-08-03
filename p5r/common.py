@@ -53,11 +53,8 @@ def accuracy_list(num_digits, predictions, labels):
 # different inputs
 
 
-def create_graph(batch_size,
-                 num_digits,
-                 num_labels,
-                 valid_dataset,
-                 test_dataset,
+def create_graph(training_config,
+                 data_config,
                  use_dropout=False,
                  learning_rate=0.05,
                  learning_decay=0.596,
@@ -70,7 +67,14 @@ def create_graph(batch_size,
     graph = tf.Graph()
     stddev = 0.1
 
-    img_height, img_width = test_dataset[0].shape[:2]
+    batch_size = training_config['batch_size']
+    img_height = data_config['image_set'][0][0].shape[0]
+    img_width = data_config['image_set'][0][0].shape[1]
+    num_digits = data_config['label_set'][0].shape[1]
+    num_labels = data_config['label_set'][0].shape[2]
+
+    # print(img_height, img_width)
+    # print(num_digits, num_labels)
 
     with graph.as_default():
 
@@ -109,7 +113,7 @@ def create_graph(batch_size,
                 pic_dim = int(round(pic_dim / 2))
                 # Minimum pic size
                 if pic_dim < 4:
-                  pic_dim = 4
+                    pic_dim = 4
 
         # The number of weights for the fully connected layer
         connected_size = pic_dim * pic_dim * layers[-1]
@@ -117,7 +121,7 @@ def create_graph(batch_size,
         connected_biases = tf.Variable(tf.constant(0.1, shape=[num_hidden]), name="connected_biases")
 
         # Output layer, multiple classifiers
-        output_weights = tf.Variable(tf.truncated_normal([num_hidden, num_labels * num_digits], stddev=stddev),name="output_weights")
+        output_weights = tf.Variable(tf.truncated_normal([num_hidden, num_labels * num_digits], stddev=stddev), name="output_weights")
         output_biases = tf.Variable(tf.ones(shape=[num_labels * num_digits]), name="output_biases")
 
         # Model.
@@ -177,9 +181,7 @@ def create_graph(batch_size,
         # optimizer = tf.train.GradientDescentOptimizer(learning_rate,
         #                                               name='optimizer').minimize(loss,
         #                                                                          global_step=global_step)
-        optimizer = tf.train.AdagradOptimizer(learning_rate,
-                                                      name='optimizer').minimize(loss,
-                                                                                 global_step=global_step)
+        optimizer = tf.train.AdagradOptimizer(learning_rate, name='optimizer').minimize(loss, global_step=global_step)
 
         # Predictions for the training, validation, and test data.
         train_prediction = [tf.nn.softmax(model(tf_train_dataset)[
@@ -251,28 +253,30 @@ def run_and_score(graph, session, batch_size, num_digits, dataset, labels):
     return np.mean(accuracy_results)
 
 
-def run_graph(graph,
-              batch_size,
-              num_digits,
-              train_dataset,
-              train_labels,
-              valid_dataset,
-              valid_labels,
-              test_dataset,
-              test_labels,
-              mins=1,
-              save_model=False):
+def run_graph(
+        graph,
+        data_config,
+        mins=1,
+        save_model=False,
+        batch_size=16,
+        eval_step = 100,
+        valid_step = 100):
+
     start_time = time.time()
 
+    train_dataset, valid_dataset, test_dataset = data_config['image_set']
+    train_labels, valid_labels, test_labels = data_config['label_set']
+
+    img_height, img_width = test_dataset[0].shape[:2]
+    num_digits, num_labels = test_labels.shape[1:]
+
     max_steps = 1000001
-    eval_step = 100
-    valid_step = 100
     timeout = mins * 60  # 30 minutes * 60 seconds
     print("Batch_size:%d" % batch_size)
     print("Mins:%d" % mins)
 
-    tf_train_dataset = graph.get_tensor_by_name('tf_train_dataset:0')
-    tf_train_labels = [graph.get_tensor_by_name('tf_train_labels_%d:0' % i) for i in range(num_digits)]
+    # tf_train_dataset = graph.get_tensor_by_name('tf_train_dataset:0')
+    # tf_train_labels = [graph.get_tensor_by_name('tf_train_labels_%d:0' % i) for i in range(num_digits)]
 
     optimizer = graph.get_tensor_by_name('optimizer:0')
     loss = graph.get_tensor_by_name('loss:0')

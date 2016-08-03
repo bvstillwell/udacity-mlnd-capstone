@@ -64,36 +64,36 @@ print('Test set', test_dataset_28.shape, test_labels.shape)
 
 dataset_56 = (train_dataset_56, valid_dataset_56, test_dataset_56)
 dataset_28 = (train_dataset_28, valid_dataset_28, test_dataset_28)
+label_set = (train_labels, valid_labels, test_labels)
 
+# The defaults are picked up from the function defaults.
+# Override any by setting them in this dict
+default_training_config = {}
 
-def run(graph_config, datasets=None):
+default_data_config = {
+    'label_set': label_set,
+    'image_set': dataset_28,
+}
+
+def run(graph_config,
+        training_config=default_training_config,
+        data_config=default_data_config):
+
     print(graph_config)
-    train_dataset, valid_dataset, test_dataset = datasets
-    print(train_dataset[0].shape)
-
-    #graph_config.update({'layers':[8, 16, 32], 'use_max_pool':False,  'use_dropout':True})
-    batch_size = 16
+    print(training_config)
+    print(data_config['image_set'][0].shape)
+    print(data_config['label_set'][0].shape)
 
     # Generate the graph
     graph = create_graph(
-        batch_size,
-        num_digits,
-        num_labels,
-        valid_dataset,
-        test_dataset,
+        training_config,
+        data_config,
         **graph_config)
 
     # Train, score and save the graph
     run_graph(
         graph,
-        batch_size,
-        num_digits,
-        train_dataset,
-        train_labels,
-        valid_dataset,
-        valid_labels,
-        test_dataset,
-        test_labels,
-        mins=1,
-        save_model=True)
+        data_config,
+        **training_config)
+
     return graph
