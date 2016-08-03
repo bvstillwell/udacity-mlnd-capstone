@@ -66,6 +66,11 @@ def reformat(num_digits, num_labels, dataset, labels):
     return dataset_output, labels_output
 
 
+def create_numbers(n):
+    return [(np.arange(n) == i).astype(np.float) for i in range(n)]
+n_digits = create_numbers(11)
+
+
 def accuracy(predictions, labels):
     return (100.0 * np.sum(np.argmax(predictions, 1) == np.argmax(labels, 1)) / predictions.shape[0])
 
@@ -118,6 +123,8 @@ def create_graph(training_config,
                                           name="tf_train_labels_%d" % i)
                            for i in range(num_digits)]
 
+        tf_train_n_digits = tf.placeholder(tf.float32, shape=(batch_size, num_digits), name='tf_train_n_digits')
+
         # Variables.
         weights = []
         biases = []
@@ -152,8 +159,11 @@ def create_graph(training_config,
         output_weights = tf.Variable(tf.truncated_normal([num_hidden, num_labels * num_digits], stddev=stddev), name="output_weights")
         output_biases = tf.Variable(tf.ones(shape=[num_labels * num_digits]), name="output_biases")
 
+        output_n_digits_weights = tf.Variable(tf.truncated_normal([num_hidden, num_digits], stddev=stddev), name="output_n_digits_weights")
+        output_n_digits_biases = tf.Variable(tf.ones(shape=[num_digits]), name="output_n_digits_biases")
+
         # Model.
-        def model(data, dropout=False):
+        def model(data, dropout=False, return_n_digits=False):
             if dropout:
                 data = tf.nn.dropout(data, 0.9)
 
@@ -179,25 +189,30 @@ def create_graph(training_config,
             output = tf.matmul(hidden, output_weights) + output_biases
 
             split_logits = tf.split(1, num_digits, output)
-            return split_logits
+
+            if return_n_digits:
+                # Add a classifier to return the number of digits
+                n_digits = tf.matmul(hidden, output_n_digits_weights) + output_n_digits_biases
+
+                return split_logits, n_digits
+            else:
+                return split_logits
 
         # Training computation.
-        logits = model(tf_train_dataset, use_dropout)
+        logits, n_digits = model(tf_train_dataset, use_dropout, True)
 
-        # Training computation.
-        logits = model(tf_train_dataset)
-
-        # loss = tf.reduce_mean([
-        #     tf.nn.softmax_cross_entropy_with_logits(
-        #         logits[i],
-        #         tf_train_labels[i]
-        #     )for i in range(num_digits)], name='loss')
-
-        loss = tf.add_n([tf.reduce_mean(
+        loss_digits = [tf.reduce_mean(
             tf.nn.softmax_cross_entropy_with_logits(
                 logits[i],
                 tf_train_labels[i]
-            ))for i in range(num_digits)], name='loss')
+            ))for i in range(num_digits)]
+
+        loss_digit_count = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(
+            n_digits,
+            tf_train_n_digits
+        ))
+        loss_digits.append(loss_digit_count)
+        loss = tf.add_n(loss_digits, name='loss')
 
         # Optimizer.
         global_step = tf.Variable(0)  # count the number of steps taken.
@@ -242,9 +257,18 @@ def run_model(graph, session, num_digits, batch_data, batch_labels, fetches):
     """Execute ops listed in feteches with a batch of training data"""
     tf_train_dataset = graph.get_tensor_by_name('tf_train_dataset:0')
     tf_train_labels = [graph.get_tensor_by_name('tf_train_labels_%d:0' % i) for i in range(num_digits)]
+    tf_train_n_digits = graph.get_tensor_by_name('tf_train_n_digits:0')
 
     feed_dict = {tf_train_labels[i]: batch_labels[:, i, :] for i in range(num_digits)}
     feed_dict[tf_train_dataset] = batch_data
+
+    # Create labels for n_digits
+    # [1., 0., 0.] = 1 digit,
+    # [0., 0., 1.] = 3 digits,
+    n_digit_labels = np.prod(batch_labels == n_digits[10], axis=2)
+    n_digit_labels = np.sum(n_digit_labels, axis=1)
+    n_digit_labels = [n_digits[num_digits - i - 1][:num_digits] for i in n_digit_labels]
+    feed_dict[tf_train_n_digits] = n_digit_labels
 
     results = session.run(fetches, feed_dict=feed_dict)
     return results
@@ -345,7 +369,7 @@ def run_graph(
                 if step > 0 or timeup:
                     if (step % eval_step == 0 or timeup):
                         log('Elapsed time(s):%d/%d (%.2f%%)' %
-                              (elapsed_time, timeout, 1.0 * elapsed_time / timeout))
+                            (elapsed_time, timeout, 1.0 * elapsed_time / timeout))
                         if timeup:
                             log("\nTIMEUP!")
                         log('Learning rate:%.5f' % learning_rate.eval())
