@@ -6,13 +6,30 @@ import matplotlib.pyplot as plt
 import time
 import sys
 import datetime
+import logging
+
+
+def get_datetime_filename():
+    return datetime.datetime.now().strftime('%y-%m-%d-%H-%M-%S')
+
+
+log = logging.getLogger('')
+session_id = get_datetime_filename()
+logfile = os.path.join('log', session_id + '.log')
+logging.basicConfig(filename=logfile, level=logging.DEBUG)
+logging.getLogger().addHandler(logging.StreamHandler())
+
+
+def log(message):
+    logging.info(message)
 
 
 def redirect_print_to_file():
+    return
     old_stdout = sys.stdout
-    log_file = open("message.log", "w")
+    log_file = open(get_datetime_filename() + ".log", "w")
     sys.stdout = log_file
-    print("this will be written to message.log")
+    log("this will be written to message.log")
     # sys.stdout = old_stdout
     # log_file.close()
 
@@ -23,10 +40,10 @@ def max_digits(dataset, labels, max_digits):
 
 
 def show_image(img, label):
-    print("Labels", label)
-    print("Dtype", img.dtype)
-    print("Shape", img.shape)
-    print("Color range", np.min(img), np.max(img))
+    log("Labels", label)
+    log("Dtype", img.dtype)
+    log("Shape", img.shape)
+    log("Color range", np.min(img), np.max(img))
     if len(img.shape) > 2:
         plt.imshow(np.reshape(img, img.shape[:2]))
     else:
@@ -84,8 +101,8 @@ def create_graph(training_config,
     num_digits = data_config['label_set'][0].shape[1]
     num_labels = data_config['label_set'][0].shape[2]
 
-    # print(img_height, img_width)
-    # print(num_digits, num_labels)
+    # log(img_height, img_width)
+    # log(num_digits, num_labels)
 
     with graph.as_default():
 
@@ -284,8 +301,8 @@ def run_graph(
 
     max_steps = 1000001
     timeout = mins * 60  # 30 minutes * 60 seconds
-    print("Batch_size:%d" % batch_size)
-    print("Mins:%d" % mins)
+    log("Batch_size:%d" % batch_size)
+    log("Mins:%d" % mins)
 
     # tf_train_dataset = graph.get_tensor_by_name('tf_train_dataset:0')
     # tf_train_labels = [graph.get_tensor_by_name('tf_train_labels_%d:0' % i) for i in range(num_digits)]
@@ -295,12 +312,12 @@ def run_graph(
     learning_rate = graph.get_tensor_by_name('learning_rate:0')
 
     if dry_run:
-        print('Dry run only')
+        log('Dry run only')
     else:
         with tf.Session(graph=graph) as session:
             tf.initialize_all_variables().run()
 
-            print('Initialized')
+            log('Initialized')
             for step in range(max_steps):
                 offset = (step * batch_size) % (train_labels.shape[0] - batch_size)
 
@@ -327,12 +344,12 @@ def run_graph(
 
                 if step > 0 or timeup:
                     if (step % eval_step == 0 or timeup):
-                        print('Elapsed time(s):%d/%d (%.2f%%)' %
+                        log('Elapsed time(s):%d/%d (%.2f%%)' %
                               (elapsed_time, timeout, 1.0 * elapsed_time / timeout))
                         if timeup:
-                            print("\nTIMEUP!")
-                        print('Learning rate:', learning_rate.eval())
-                        print('Minibatch loss at step %d: %f' % (step, results[1]))
+                            log("\nTIMEUP!")
+                        log('Learning rate:%.5f' % learning_rate.eval())
+                        log('Minibatch loss at step %d: %f' % (step, results[1]))
 
                         # Score training dataset
                         train_accuracy = run_and_score(
@@ -343,7 +360,7 @@ def run_graph(
                             batch_data,
                             batch_labels)
 
-                        print('Minibatch accuracy: %.1f%%' % train_accuracy)
+                        log('Minibatch accuracy: %.1f%%' % train_accuracy)
 
                     if (step % valid_step == 0 or timeup):
                         # Score valid dataset
@@ -355,7 +372,7 @@ def run_graph(
                             valid_dataset,
                             valid_labels)
 
-                        print('Validation accuracy: %.1f%%' % valid_accuracy)
+                        log('Validation accuracy: %.1f%%' % valid_accuracy)
 
                     if timeup:
                         break
@@ -368,14 +385,13 @@ def run_graph(
                 num_digits,
                 test_dataset,
                 test_labels)
-            print('Test accuracy: %.1f%%' % test_accuracy)
+            log('Test accuracy: %.1f%%' % test_accuracy)
 
             if save_model:
-                filename = datetime.datetime.now().strftime('%y-%m-%d-%H-%M-%S')
-                print("Saving graph:%s" % filename)
+                log("Saving graph:%s" % session_id)
                 saver = tf.train.Saver()
-                checkpoint_path = os.path.join('save', filename + '.ckpt')
+                checkpoint_path = os.path.join('save', session_id + '.ckpt')
                 saver.save(session, checkpoint_path, global_step=0)
-                tf.train.write_graph(session.graph.as_graph_def(), 'save', filename + '.pb')
+                tf.train.write_graph(session.graph.as_graph_def(), 'save', session_id + '.pb')
 
-    print("Finished\n")
+    log("Finished\n")

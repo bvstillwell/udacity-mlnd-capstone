@@ -24,3 +24,12 @@ __pycache__
 *.pickle
 *.mat
 notMNIST*
+log
+save
+test
+train
+android/gen
+android/gen/
+.idea
+gen
+assets
