@@ -224,7 +224,7 @@ def create_graph(training_config,
         # optimizer = tf.train.GradientDescentOptimizer(learning_rate,
         #                                               name='optimizer').minimize(loss,
         #                                                                          global_step=global_step)
-        optimizer = tf.train.AdagradOptimizer(learning_rate, name='optimizer').minimize(loss, global_step=global_step)
+        optimizer = tf.train.GradientDescentOptimizer(learning_rate, name='optimizer').minimize(loss, global_step=global_step)
 
         # Predictions for the training, validation, and test data.
         train_prediction = [tf.nn.softmax(model(tf_train_dataset)[
@@ -412,10 +412,11 @@ def run_graph(
             log('Test accuracy: %.1f%%' % test_accuracy)
 
             if save_model:
-                log("Saving graph:%s" % session_id)
+                file_id = get_datetime_filename()
+                log("Saving graph:%s" % file_id)
                 saver = tf.train.Saver()
-                checkpoint_path = os.path.join('save', session_id + '.ckpt')
+                checkpoint_path = os.path.join('save', file_id + '.ckpt')
                 saver.save(session, checkpoint_path, global_step=0)
-                tf.train.write_graph(session.graph.as_graph_def(), 'save', session_id + '.pb')
+                tf.train.write_graph(session.graph.as_graph_def(), 'save', file_id + '.pb')
 
     log("Finished\n")

@@ -343,7 +343,7 @@ static std::string ClassifyImage(const RGBA* const bitmap_src) {
   {
     sum += confidence[digit];
 
-    if (confidence[digit] < 0.7)
+    if (confidence[digit] < 0.3)
       ss2 << '.'; //Low confidence on this digit
     else if (max[digit]<10)
       ss2 << max[digit];
