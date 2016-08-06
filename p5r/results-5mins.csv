@@ -198,7 +198,6 @@ final_learning_rate,include_digit_length_classifier,layers,learning_rate,num_hid
 0.04758,False,[8],0.05,128,9605,0.745,0.734,True,True,0.721
 0.0984,False,[32],0.1,128,3121,0.699,0.755,True,False,0.665
 0.02451,False,[32],0.025,64,3855,0.592,0.536,True,False,0.547
-0.09944,False,"[8, 16, 32]",0.1,128,1078,0.043,0.031,False,False,0.046
 0.0994,False,"[8, 16, 32]",0.1,32,1170,0.436,0.349,False,False,0.379
 0.09676,False,[32],0.1,64,6366,0.775,0.979,False,True,0.786
 0.0961,False,[16],0.1,64,7683,0.729,0.979,False,False,0.737
@@ -215,3 +214,4 @@ final_learning_rate,include_digit_length_classifier,layers,learning_rate,num_hid
 0.04777,False,[8],0.05,32,8831,0.648,0.667,True,False,0.596
 0.04837,False,[16],0.05,32,6412,0.651,0.635,True,False,0.599
 0.04967,False,"[16, 32]",0.05,64,1272,0.602,0.599,True,False,0.545
+0.09944,False,"[8, 16, 32]",0.1,128,1085,0.436,0.365,False,False,0.379
