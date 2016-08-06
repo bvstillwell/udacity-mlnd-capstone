@@ -1,12 +1,15 @@
-from __future__ import print_function
-import numpy as np
+#
+# This file contains the training and scoring functions as well as
+# a large number of helper files
+#
 import os
+import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import time
-import sys
 import datetime
 import logging
+import pprint
 
 
 def get_datetime_filename():
@@ -20,18 +23,29 @@ logging.basicConfig(filename=logfile, level=logging.DEBUG)
 logging.getLogger().addHandler(logging.StreamHandler())
 
 
+def expand_param_search(param_search, graph_config={}):
+    # If we have no more param_search then lets return this value
+    if not param_search:
+        return graph_config.copy()
+
+    key = param_search.keys()[0]
+    results = []
+    for value in param_search[key]:
+        graph_config[key] = value
+
+        param_search_next = param_search.copy()
+        del param_search_next[key]
+
+        result = expand_param_search(param_search_next, graph_config)
+        if type(result) is list:
+            results = results + result
+        else:
+            results.append(result)
+    return results
+
+
 def log(message):
     logging.info(message)
-
-
-def redirect_print_to_file():
-    return
-    old_stdout = sys.stdout
-    log_file = open(get_datetime_filename() + ".log", "w")
-    sys.stdout = log_file
-    log("this will be written to message.log")
-    # sys.stdout = old_stdout
-    # log_file.close()
 
 
 def max_digits(dataset, labels, max_digits):
@@ -84,8 +98,6 @@ def accuracy_list(num_digits, predictions, labels):
 
 # This graph will start of simple, and get more complex as we try
 # different inputs
-
-
 def create_graph(training_config,
                  data_config,
                  use_dropout=False,
@@ -94,11 +106,8 @@ def create_graph(training_config,
                  use_max_pool=False,
                  num_hidden=64,
                  layers=[16],
-                 patch_size=5):
-    num_channels = 1
-
-    graph = tf.Graph()
-    stddev = 0.1
+                 patch_size=5,
+                 include_digit_length_classifier=False):
 
     batch_size = training_config['batch_size']
     img_height = data_config['image_set'][0][0].shape[0]
@@ -106,8 +115,16 @@ def create_graph(training_config,
     num_digits = data_config['label_set'][0].shape[1]
     num_labels = data_config['label_set'][0].shape[2]
 
-    # log(img_height, img_width)
-    # log(num_digits, num_labels)
+    # Log the parameters
+    params = locals().copy()
+    del params['data_config']
+    del params['training_config']
+    log("Create graph params:")
+    log(pprint.pformat(params))
+    log('')
+
+    graph = tf.Graph()
+    stddev = 0.1
 
     with graph.as_default():
 
@@ -115,7 +132,7 @@ def create_graph(training_config,
         tf_train_dataset = tf.placeholder(tf.float32, shape=(batch_size,
                                                              img_height,
                                                              img_width,
-                                                             num_channels),
+                                                             1),
                                           name="tf_train_dataset")
 
         tf_train_labels = [tf.placeholder(tf.float32, shape=(batch_size,
@@ -123,26 +140,26 @@ def create_graph(training_config,
                                           name="tf_train_labels_%d" % i)
                            for i in range(num_digits)]
 
-        tf_train_n_digits = tf.placeholder(tf.float32, shape=(batch_size, num_digits), name='tf_train_n_digits')
-
         # Variables.
         weights = []
         biases = []
-        layers.insert(0, 1)
+        all_layers = layers[:]
+        all_layers.insert(0, 1)
+        layers = None
         # weight will look like [1, 8, 16, 32]
         # or [1, 8]
 
         # We need to calculate our connected size
         pic_dim = img_width
-        for i in range(len(layers) - 1):
+        for i in range(len(all_layers) - 1):
             weights.append(tf.Variable(tf.truncated_normal([patch_size,
                                                             patch_size,
-                                                            layers[i],
-                                                            layers[i + 1]],
+                                                            all_layers[i],
+                                                            all_layers[i + 1]],
                                                            stddev=stddev),
                                        name="layer%d_weights" % i))
 
-            biases.append(tf.Variable(tf.constant(0.1, shape=[layers[i + 1]]), name="layer%d_biases" % i))
+            biases.append(tf.Variable(tf.constant(0.1, shape=[all_layers[i + 1]]), name="layer%d_biases" % i))
             if use_max_pool:
                 # Our pic size decreased when we use max_pooling
                 pic_dim = int(round(pic_dim / 2))
@@ -151,7 +168,7 @@ def create_graph(training_config,
                     pic_dim = 4
 
         # The number of weights for the fully connected layer
-        connected_size = pic_dim * pic_dim * layers[-1]
+        connected_size = pic_dim * pic_dim * all_layers[-1]
         connected_weights = tf.Variable(tf.truncated_normal([connected_size, num_hidden], stddev=stddev), name="connected_weights")
         connected_biases = tf.Variable(tf.constant(0.1, shape=[num_hidden]), name="connected_biases")
 
@@ -159,6 +176,7 @@ def create_graph(training_config,
         output_weights = tf.Variable(tf.truncated_normal([num_hidden, num_labels * num_digits], stddev=stddev), name="output_weights")
         output_biases = tf.Variable(tf.ones(shape=[num_labels * num_digits]), name="output_biases")
 
+        tf_train_n_digits = tf.placeholder(tf.float32, shape=(batch_size, num_digits), name='tf_train_n_digits')
         output_n_digits_weights = tf.Variable(tf.truncated_normal([num_hidden, num_digits], stddev=stddev), name="output_n_digits_weights")
         output_n_digits_biases = tf.Variable(tf.ones(shape=[num_digits]), name="output_n_digits_biases")
 
@@ -167,7 +185,7 @@ def create_graph(training_config,
             if dropout:
                 data = tf.nn.dropout(data, 0.9)
 
-            for i in range(len(layers) - 1):
+            for i in range(len(all_layers) - 1):
                 data = tf.nn.relu(tf.nn.conv2d(data,
                                                weights[i],
                                                [1, 1, 1, 1],
@@ -192,8 +210,10 @@ def create_graph(training_config,
 
             if return_n_digits:
                 # Add a classifier to return the number of digits
-                n_digits = tf.matmul(hidden, output_n_digits_weights) + output_n_digits_biases
-
+                if include_digit_length_classifier:
+                    n_digits = tf.matmul(hidden, output_n_digits_weights) + output_n_digits_biases
+                else:
+                    n_digits = None
                 return split_logits, n_digits
             else:
                 return split_logits
@@ -207,11 +227,14 @@ def create_graph(training_config,
                 tf_train_labels[i]
             ))for i in range(num_digits)]
 
-        loss_digit_count = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(
-            n_digits,
-            tf_train_n_digits
-        ))
-        loss_digits.append(loss_digit_count)
+        # Whether to use the digits length in the loss function
+        if include_digit_length_classifier:
+            loss_digit_count = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(
+                n_digits,
+                tf_train_n_digits
+            ))
+            loss_digits.append(loss_digit_count)
+
         loss = tf.add_n(loss_digits, name='loss')
 
         # Optimizer.
@@ -221,9 +244,6 @@ def create_graph(training_config,
                                                    100000,
                                                    learning_decay,
                                                    name='learning_rate')
-        # optimizer = tf.train.GradientDescentOptimizer(learning_rate,
-        #                                               name='optimizer').minimize(loss,
-        #                                                                          global_step=global_step)
         optimizer = tf.train.GradientDescentOptimizer(learning_rate, name='optimizer').minimize(loss, global_step=global_step)
 
         # Predictions for the training, validation, and test data.
@@ -253,7 +273,7 @@ def create_graph(training_config,
     return graph
 
 
-def run_model(graph, session, num_digits, batch_data, batch_labels, fetches):
+def run_fetches(graph, session, num_digits, batch_data, batch_labels, fetches):
     """Execute ops listed in feteches with a batch of training data"""
     tf_train_dataset = graph.get_tensor_by_name('tf_train_dataset:0')
     tf_train_labels = [graph.get_tensor_by_name('tf_train_labels_%d:0' % i) for i in range(num_digits)]
@@ -285,7 +305,7 @@ def run_and_score(graph, session, batch_size, num_digits, dataset, labels):
         batch_data = dataset[offset:(offset + batch_size), :, :, :]
         batch_labels = labels[offset:(offset + batch_size), :]
 
-        results = run_model(
+        results = run_fetches(
             graph,
             session,
             num_digits,
@@ -315,6 +335,21 @@ def run_graph(
         valid_step=100,
         dry_run=False):
 
+    training_shape = str(data_config['image_set'][0].shape)
+    valid_shape = str(data_config['image_set'][1].shape)
+    test_shape = str(data_config['image_set'][2].shape)
+    training_label_shape = str(data_config['label_set'][0].shape)
+    valid_label_shape = str(data_config['label_set'][1].shape)
+    test_label_shape = str(data_config['label_set'][2].shape)
+
+    # Log the parameters
+    params = locals().copy()
+    del params['data_config']
+    del params['graph']
+    log("Run graph params:")
+    log(pprint.pformat(params))
+    log('')
+
     start_time = time.time()
 
     train_dataset, valid_dataset, test_dataset = data_config['image_set']
@@ -325,16 +360,16 @@ def run_graph(
 
     max_steps = 1000001
     timeout = mins * 60  # 30 minutes * 60 seconds
-    log("Batch_size:%d" % batch_size)
-    log("Mins:%d" % mins)
-
-    # tf_train_dataset = graph.get_tensor_by_name('tf_train_dataset:0')
-    # tf_train_labels = [graph.get_tensor_by_name('tf_train_labels_%d:0' % i) for i in range(num_digits)]
 
     optimizer = graph.get_tensor_by_name('optimizer:0')
     loss = graph.get_tensor_by_name('loss:0')
     learning_rate = graph.get_tensor_by_name('learning_rate:0')
 
+    test_accuracy = 0.
+    valid_accuracy = 0.
+    train_accuracy = 0.
+    step = 0
+    learning_rate_value = 0.
     if dry_run:
         log('Dry run only')
     else:
@@ -348,20 +383,13 @@ def run_graph(
                 batch_data = train_dataset[offset:(offset + batch_size), :, :, :]
                 batch_labels = train_labels[offset:(offset + batch_size), :]
 
-                results = run_model(
+                results = run_fetches(
                     graph,
                     session,
                     num_digits,
                     batch_data,
                     batch_labels,
                     [optimizer, loss])
-
-                # feed_dict = {tf_train_labels[i]: batch_labels[
-                #     :, i, :] for i in range(num_digits)}
-                # feed_dict[tf_train_dataset] = batch_data
-
-                # fetches = [optimizer, loss]
-                # results = session.run(fetches, feed_dict=feed_dict)
 
                 elapsed_time = time.time() - start_time
                 timeup = elapsed_time >= timeout
@@ -372,7 +400,8 @@ def run_graph(
                             (elapsed_time, timeout, 1.0 * elapsed_time / timeout))
                         if timeup:
                             log("\nTIMEUP!")
-                        log('Learning rate:%.5f' % learning_rate.eval())
+                        learning_rate_value = learning_rate.eval()
+                        log('Learning rate:%.5f' % learning_rate_value)
                         log('Minibatch loss at step %d: %f' % (step, results[1]))
 
                         # Score training dataset
@@ -420,3 +449,33 @@ def run_graph(
                 tf.train.write_graph(session.graph.as_graph_def(), 'save', file_id + '.pb')
 
     log("Finished\n")
+
+    result = {
+        'test_accuracy': round(test_accuracy / 100., 3),
+        'valid_accuracy': round(valid_accuracy / 100., 3),
+        'train_accuracy': round(train_accuracy / 100., 3),
+        'step': step,
+        'final_learning_rate': round(learning_rate_value, 5),
+    }
+    log("Result:")
+    log(pprint.pformat(result))
+    log('')
+    return result
+
+
+def create_train_score(
+        graph_config,
+        training_config,
+        data_config):
+
+    log("*" * 40)
+    log("Train and score starting")
+    log("*" * 40)
+
+    # Generate the graph
+    graph = create_graph(training_config, data_config, **graph_config)
+
+    # Train, score and save the graph
+    score = run_graph(graph, data_config, **training_config)
+
+    return score
