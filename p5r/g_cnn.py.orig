@@ -52,7 +52,11 @@ max_running_mins = 5
 training_config = {
     'eval_step': 500,
     'valid_step': 500,
+<<<<<<< HEAD
+    'batch_size': 16,
+=======
     'batch_size': 64,
+>>>>>>> e9e8528b90453a957dd24067e7628b4ac158bd9e
     'mins': max_running_mins,
     'save_model': True,
     #  'dry_run': True
