@@ -1,8 +1,9 @@
 #
 # This file contains the code to run a parameter seach
 #
+
+from load_data import *
 from common import *
-from run_graph import *
 import numpy as np
 import pandas as pd
 
