@@ -106,8 +106,7 @@ def create_graph(training_config,
                  use_max_pool=False,
                  num_hidden=64,
                  layers=[16],
-                 patch_size=5,
-                 include_digit_length_classifier=False):
+                 patch_size=5):
 
     batch_size = training_config['batch_size']
     img_height = data_config['image_set'][0][0].shape[0]
@@ -181,7 +180,7 @@ def create_graph(training_config,
         output_n_digits_biases = tf.Variable(tf.ones(shape=[num_digits]), name="output_n_digits_biases")
 
         # Model.
-        def model(data, dropout=False, return_n_digits=False):
+        def model(data, dropout=False):
             if dropout:
                 data = tf.nn.dropout(data, 0.9)
 
@@ -208,15 +207,7 @@ def create_graph(training_config,
 
             split_logits = tf.split(1, num_digits, output)
 
-            if return_n_digits:
-                # Add a classifier to return the number of digits
-                if include_digit_length_classifier:
-                    n_digits = tf.matmul(hidden, output_n_digits_weights) + output_n_digits_biases
-                else:
-                    n_digits = None
-                return split_logits, n_digits
-            else:
-                return split_logits
+            return split_logits
 
         # Training computation.
         logits, n_digits = model(tf_train_dataset, use_dropout, True)
@@ -226,14 +217,6 @@ def create_graph(training_config,
                 logits[i],
                 tf_train_labels[i]
             ))for i in range(num_digits)]
-
-        # Whether to use the digits length in the loss function
-        if include_digit_length_classifier:
-            loss_digit_count = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(
-                n_digits,
-                tf_train_n_digits
-            ))
-            loss_digits.append(loss_digit_count)
 
         loss = tf.add_n(loss_digits, name='loss')
 
@@ -281,14 +264,6 @@ def run_fetches(graph, session, num_digits, batch_data, batch_labels, fetches):
 
     feed_dict = {tf_train_labels[i]: batch_labels[:, i, :] for i in range(num_digits)}
     feed_dict[tf_train_dataset] = batch_data
-
-    # Create labels for n_digits
-    # [1., 0., 0.] = 1 digit,
-    # [0., 0., 1.] = 3 digits,
-    n_digit_labels = np.prod(batch_labels == n_digits[10], axis=2)
-    n_digit_labels = np.sum(n_digit_labels, axis=1)
-    n_digit_labels = [n_digits[num_digits - i - 1][:num_digits] for i in n_digit_labels]
-    feed_dict[tf_train_n_digits] = n_digit_labels
 
     results = session.run(fetches, feed_dict=feed_dict)
     return results

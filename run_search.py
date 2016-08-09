@@ -27,18 +27,17 @@ default_data_config = {
 #
 grid_param_search = {
     'use_dropout': [True, False],
-    'use_max_pool': [True, False],
-    'learning_rate': [0.05, 0.1, 0.025],
-    'num_hidden': [32, 64, 128],
-    'layers': [
-        [8],
-        [16],
-        [32],
-        [8, 16],
-        [16, 32],
-        [8, 16, 32]
-    ],
-    'include_digit_length_classifier': [False],
+    # 'use_max_pool': [True, False],
+    # 'learning_rate': [0.05, 0.1, 0.025],
+    # 'num_hidden': [32, 64, 128],
+    # 'layers': [
+    #     [8],
+    #     [16],
+    #     [32],
+    #     [8, 16],
+    #     [16, 32],
+    #     [8, 16, 32]
+    # ]
 }
 
 #
