@@ -16,7 +16,7 @@ import tensorflow as tf
 import time
 import pprint
 
-from common import *
+from logging_setup import *
 from create_graph import create_graph
 
 
@@ -166,6 +166,31 @@ def train_and_score_graph(
         dry_run=False):
     """Run a full training and scoring cycle on the graph"""
 
+    #
+    # Extract the required variables from the configurations
+    #
+    training_shape = str(data_config['image_set'][0].shape)
+    valid_shape = str(data_config['image_set'][1].shape)
+    test_shape = str(data_config['image_set'][2].shape)
+    training_label_shape = str(data_config['label_set'][0].shape)
+    valid_label_shape = str(data_config['label_set'][1].shape)
+    test_label_shape = str(data_config['label_set'][2].shape)
+
+    #
+    # Log the parameters
+    #
+    params = locals().copy()
+    del params['data_config']
+    del params['graph']
+    log("Run graph params:")
+    log(pprint.pformat(params))
+    log('')
+
+    #
+    #
+    # Helper functions
+    #
+    #
     def accuracy(predictions, labels):
         """Return the accuracy"""
         return (100.0 * np.sum(np.argmax(predictions, 1) == np.argmax(labels, 1)) / predictions.shape[0])
@@ -232,28 +257,6 @@ def train_and_score_graph(
 
         # return the average of the tests
         return np.mean(accuracy_results)
-
-
-
-    #
-    # Extract the required variables from the configurations
-    #
-    training_shape = str(data_config['image_set'][0].shape)
-    valid_shape = str(data_config['image_set'][1].shape)
-    test_shape = str(data_config['image_set'][2].shape)
-    training_label_shape = str(data_config['label_set'][0].shape)
-    valid_label_shape = str(data_config['label_set'][1].shape)
-    test_label_shape = str(data_config['label_set'][2].shape)
-
-    #
-    # Log the parameters
-    #
-    params = locals().copy()
-    del params['data_config']
-    del params['graph']
-    log("Run graph params:")
-    log(pprint.pformat(params))
-    log('')
 
     #
     # More variables for use

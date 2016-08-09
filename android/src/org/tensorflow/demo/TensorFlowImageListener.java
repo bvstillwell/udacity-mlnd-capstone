@@ -57,7 +57,7 @@ public class TensorFlowImageListener implements OnImageAvailableListener {
 
   private static final String MODEL_FILE = "file:///android_asset/frozen_graph.pb";
   private static final String LABEL_FILE =
-      "file:///android_asset/imagenet_comp_graph_label_strings.txt";
+      "file:///android_asset/empty.txt";
 
   private Integer sensorOrientation;
 

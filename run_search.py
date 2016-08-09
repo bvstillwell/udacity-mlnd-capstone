@@ -53,7 +53,7 @@ default_data_config = {
 #
 # The max training time for each model
 #
-max_running_mins = 2
+max_running_mins = 1
 
 
 #
@@ -65,7 +65,7 @@ training_config = {
     'batch_size': 2,
     'mins': max_running_mins,
     'save_model': True,
-    'dry_run': True
+    #'dry_run': True
 }
 
 

@@ -1,8 +1,10 @@
+# ############################################################################
 #
 # This file is used to load and format all the data for use with tensorflow
 #
 from six.moves import cPickle as pickle
-from common import *
+import numpy as np
+from logging_setup import *
 
 #
 #

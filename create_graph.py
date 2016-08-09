@@ -9,7 +9,8 @@
 
 import pprint
 import tensorflow as tf
-from common import *
+from logging_setup import *
+
 
 def create_graph(
         training_config,
@@ -182,6 +183,6 @@ def create_graph(
                                      name="tf_test_prediction_%d" % i)
                        for i in range(num_digits)]
                       ),
-            name='tf_predict_single_output')
+            name='predict_single_output')
 
     return graph
